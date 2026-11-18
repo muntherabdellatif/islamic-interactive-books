@@ -1,0 +1,120 @@
+<!doctype html>
+<!--
+  Side-by-side reviewer for stage-1 page HTML.
+  Run from the repository root:  python3 -m http.server 8000
+  Then open:                     http://localhost:8000/review/?page=3
+  Keys: ← next page, → previous page (RTL book), N toggles line numbers.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مراجعة الصفحات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f3ec; --panel: #fffdf8; --ink: #1f1b16; --muted: #7a7064;
+    --line: #e4ddd0; --accent: #2f6f5e; --warn: #b5651d; --bad: #b23a3a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #171512; --panel: #201d19; --ink: #ece6dc; --muted: #9a9083;
+      --line: #36312a; --accent: #6fb8a2; --warn: #e0a060; --bad: #e07a7a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, sans-serif; }
+  .toolbar {
+    position: sticky; top: 0; z-index: 2; display: flex; gap: 8px; align-items: center;
+    padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); flex-wrap: wrap;
+  }
+  .toolbar input { width: 80px; padding: 4px 6px; font: inherit; }
+  .toolbar button { padding: 4px 12px; font: inherit; cursor: pointer; }
+  .meta { color: var(--muted); font-size: 14px; }
+  .status { font-size: 14px; }
+  .status.bad { color: var(--bad); }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 16px; }
+  @media (max-width: 800px) { .split { grid-template-columns: 1fr; } }
+  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: auto; max-height: calc(100vh - 80px); }
+  .pane img { width: 100%; display: block; background: #fff; }
+  .html-pane { padding: 16px 24px; font-family: "Amiri", serif; font-size: 20px; line-height: 1.9; }
+  .page-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--ink); margin-bottom: 8px; font-weight: 700; }
+  .line { display: block; position: relative; }
+  .show-numbers .line::before {
+    content: attr(data-line); position: absolute; right: -22px; font-size: 11px;
+    color: var(--muted); font-family: system-ui, sans-serif; top: 0.6em;
+  }
+  .book-paragraph, .sanad-block, .poem-bayt, .footnote, .page-note { margin: 0 0 4px; }
+  .book-paragraph > .line:first-child, .sanad-block > .line:first-child { text-indent: 1.5em; }
+  [data-continued="true"] > .line:first-child { text-indent: 0; }
+  .sanad-block { border-inline-start: 3px solid var(--accent); padding-inline-start: 8px; }
+  .chapter-title, .section-title { text-align: center; font-size: 1.15em; margin: 6px 0; }
+  .poem-bayt .line { display: flex; justify-content: space-around; }
+  .page-footnotes { border-top: 1px solid var(--line); margin-top: 12px; font-size: 0.85em; }
+  .uncertain { background: color-mix(in srgb, var(--warn) 25%, transparent); border-bottom: 1px dashed var(--warn); }
+  .illegible { color: var(--bad); }
+  [data-blank="true"] .page-body::after { content: "صفحة فارغة / بلا نص"; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button id="prev" title="السابقة (→)">→ السابقة</button>
+  <input id="page" type="number" min="1" max="985" aria-label="رقم الصورة">
+  <button id="next" title="التالية (←)">التالية ←</button>
+  <label><input id="numbers" type="checkbox" checked> أرقام الأسطر</label>
+  <span id="meta" class="meta"></span>
+  <span id="status" class="status"></span>
+</div>
+<div class="split">
+  <div class="pane"><img id="scan" alt="صورة الصفحة الأصلية"></div>
+  <div class="pane html-pane show-numbers" id="html"></div>
+</div>
+<script>
+  const BOOK = "../data/books/al-nashr";
+  const MAX_PAGE = 985;
+  const pageInput = document.getElementById("page");
+  const htmlPane = document.getElementById("html");
+  const statusEl = document.getElementById("status");
+
+  function currentPage() {
+    const n = Number(new URLSearchParams(location.search).get("page"));
+    return Number.isInteger(n) && n >= 1 && n <= MAX_PAGE ? n : 1;
+  }
+
+  async function show(n) {
+    pageInput.value = n;
+    history.replaceState(null, "", `?page=${n}`);
+    document.getElementById("scan").src = `${BOOK}/images/${n}.webp`;
+    statusEl.textContent = ""; statusEl.className = "status";
+    try {
+      const res = await fetch(`${BOOK}/html/${n}.html`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      htmlPane.innerHTML = await res.text();
+      const art = htmlPane.querySelector("article");
+      const lines = htmlPane.querySelectorAll(".line").length;
+      const unsure = htmlPane.querySelectorAll(".uncertain, .illegible").length;
+      document.getElementById("meta").textContent =
+        `ج${art?.dataset.printedVol ?? "?"} ص${art?.dataset.printedPage ?? "?"} · ${lines} سطر`;
+      if (unsure) { statusEl.textContent = `${unsure} موضع غير مؤكد`; statusEl.classList.add("bad"); }
+    } catch (err) {
+      htmlPane.textContent = `لم يُنسخ ملف هذه الصفحة بعد (${err.message}).`;
+      document.getElementById("meta").textContent = "";
+    }
+  }
+
+  const go = (d) => show(Math.min(MAX_PAGE, Math.max(1, Number(pageInput.value) + d)));
+  document.getElementById("prev").onclick = () => go(-1);
+  document.getElementById("next").onclick = () => go(1);
+  pageInput.onchange = () => go(0);
+  document.getElementById("numbers").onchange = (e) => htmlPane.classList.toggle("show-numbers", e.target.checked);
+  document.addEventListener("keydown", (e) => {
+    if (e.target === pageInput) return;
+    if (e.key === "ArrowLeft") go(1);
+    if (e.key === "ArrowRight") go(-1);
+    if (e.key.toLowerCase() === "n") document.getElementById("numbers").click();
+  });
+  show(currentPage());
+</script>
+</body>
+</html>
