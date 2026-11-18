@@ -30,9 +30,13 @@ def diff_page(a_path: Path, b_path: Path) -> dict[str, object]:
     a = {n: normalise(t) for n, t in load_lines(a_path).items()}
     b = {n: normalise(t) for n, t in load_lines(b_path).items()}
     diffs = []
+    spacing_only = 0
     for n in sorted(set(a) | set(b)):
         ta, tb = a.get(n, ""), b.get(n, "")
         if ta == tb:
+            continue
+        if ta.replace(" ", "") == tb.replace(" ", ""):
+            spacing_only += 1  # tight justification makes word gaps ambiguous: auto-resolved
             continue
         kind = "diacritics" if strip_marks(ta) == strip_marks(tb) else "words"
         diffs.append({"line": n, "kind": kind, "A": ta, "B": tb})
@@ -40,6 +44,7 @@ def diff_page(a_path: Path, b_path: Path) -> dict[str, object]:
     return {
         "lines_a": len(a), "lines_b": len(b), "line_count_match": len(a) == len(b),
         "differing_lines": diffs,
+        "spacing_only_lines": spacing_only,
         "agreement_pct": round(100 * (total - len(diffs)) / total, 1),
     }
 
@@ -62,7 +67,7 @@ def main() -> int:
         result[str(page)] = info
         flag = "" if info["line_count_match"] else "  LINE COUNT MISMATCH"
         print(f"page {page}: A={info['lines_a']} B={info['lines_b']} "
-              f"diff-lines={len(info['differing_lines'])} agreement={info['agreement_pct']}%{flag}")
+              f"diff-lines={len(info['differing_lines'])} spacing-only={info['spacing_only_lines']} agreement={info['agreement_pct']}%{flag}")
         for d in info["differing_lines"]:
             print(f"   L{d['line']} [{d['kind']}]\n     A: {d['A']}\n     B: {d['B']}")
     if args.json:
