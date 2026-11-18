@@ -2,8 +2,9 @@
 
 Usage: python3 crop_lines.py <image> <out-dir> <line,line,...> --total N [--scale S]
 
-The text area (below the long rule under the running header, down to the last ink
-row) is divided evenly into N lines, N being the page's line count from the HTML.
+The line pitch is estimated from the periodicity of the page's ink profile and the
+text block is anchored at the last ink row, so line n sits n pitches below
+(bottom - N*pitch), N being the page's line count from the HTML.
 Each crop spans one pitch plus overlap on both sides, so the target line is always
 fully inside it, with slivers of its neighbours. Scans are noisy and slightly
 skewed, which defeats ink-gap line detection, hence the even division.
@@ -23,6 +24,9 @@ MARGIN_RATIO = 0.08
 OVERLAP_PITCH = 0.35
 DEFAULT_SCALE = 1.8
 HEADER_SEARCH_RATIO = 0.25
+MIN_PITCH_PX = 35
+MAX_PITCH_PX = 110
+BODY_START_RATIO = 0.25
 
 
 def ink_rows(gray: np.ndarray) -> np.ndarray:
@@ -43,13 +47,23 @@ def last_ink_row(gray: np.ndarray) -> int:
     return int(rows.max()) if rows.size else gray.shape[0] - 1
 
 
+def estimate_pitch(gray: np.ndarray, bottom: int) -> float:
+    """Line pitch from the dominant period of the body's row-ink profile (autocorrelation)."""
+    start = int(gray.shape[0] * BODY_START_RATIO)
+    profile = ink_rows(gray)[start:bottom].astype(float)
+    profile -= profile.mean()
+    corr = np.correlate(profile, profile, mode="full")[len(profile) - 1:]
+    window = corr[MIN_PITCH_PX:MAX_PITCH_PX]
+    return float(MIN_PITCH_PX + int(np.argmax(window)))
+
+
 def crop_lines(image: Path, out_dir: Path, wanted: list[int], total: int, scale: float) -> list[Path]:
     with Image.open(image) as img:
         page = img.convert("L")
     gray = np.asarray(page)
-    top = find_rule_bottom(gray)
     bottom = last_ink_row(gray)
-    pitch = (bottom - top) / total
+    pitch = estimate_pitch(gray, bottom)
+    top = bottom - total * pitch
     out_dir.mkdir(parents=True, exist_ok=True)
     paths: list[Path] = []
     for n in wanted:
