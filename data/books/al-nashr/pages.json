@@ -1,0 +1,8 @@
+{
+  "description": "Maps printed (volume, page) of the scanned edition to images/<n>.webp. image = image_offset + printed_page.",
+  "volumes": [
+    { "volume": 1, "pdf": "pdf/al_nashr_vol1.pdf", "printed_pages": 510, "image_offset": 0, "first_image": 1, "last_image": 510 },
+    { "volume": 2, "pdf": "pdf/al_nashr_vol2.pdf", "printed_pages": 475, "image_offset": 510, "first_image": 511, "last_image": 985 }
+  ],
+  "notes": "The '(ص N)' page numbers inside resources_notes / note / source/*.md are cross-references copied from the isnad text ('بالسند المذكور ص N') and follow a different pagination; they do not map to these images."
+}
