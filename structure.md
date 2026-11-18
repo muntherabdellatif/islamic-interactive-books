@@ -20,7 +20,8 @@ islamic-interactive-books/
 │           ├── source/               # النصوص المفرغة بصيغة Markdown
 │           ├── formatted-data/       # الكيانات المهيكلة بصيغة JSON
 │           ├── raw-data/             # البيانات الأولية المستخرجة
-│           └── mapper.json           # خريطة الفهرسة والربط
+│           ├── mapper.json           # خريطة الفهرسة والربط
+│           └── pages.json            # تحويل (المجلد، الصفحة المطبوعة) إلى رقم صورة الصفحة
 │
 ├── pipeline/                         # مجلد خط الإنتاج وإدارة المعالجة الحالية
 │   └── status.md                     # تتبع حالة الكتاب والحزم قيد المعالجة حالياً
@@ -47,6 +48,9 @@ islamic-interactive-books/
 * يحتوي على أصول الكتب التراثية المقسمة حسب اسم الكتاب.
 * يتميز مجلد الصور `images/` باعتماد صيغة `WebP` فائقة الخفة وبأبعاد موحدة لضمان أداء الويب السريع.
 * نصوص `source/` و `formatted-data/` تمثل مخرجات مراحل المعالجة والاعتماد البشري.
+* **`formatted-data/`** = نفس سجلات `raw-data/` (بالترتيب نفسه) مع إضافة `student_normalized_name` و `teacher_normalized_name` (حذف التشكيل والتطويل، وتوحيد أ/إ/آ ← ا، ة ← ه، ى ← ي)، واستبدال `resource_id`/`resource_note` بالمصفوفتين `resources`/`resources_notes`. حقول الاسم والتواريخ تبقى مطابقة لـ `raw-data/` ولا تُملأ من سجلات أخرى إلا بعد مرحلة توحيد الكيانات (المرحلة 3).
+* **ترقيم الصور:** صور المجلد الأول `1.webp`–`510.webp` تطابق الصفحة المطبوعة مباشرة، وصور المجلد الثاني `511.webp`–`985.webp` = 510 + رقم الصفحة (التفاصيل في `pages.json`).
+* **تنبيه:** أرقام `(ص N)` داخل `resources_notes` و `note` و `source/*.md` إحالات منقولة من نص الإسناد ("بالسند المذكور ص N") بترقيم طبعة أخرى، ولا تشير إلى صور هذه الطبعة.
 
 ### 2. مجلد خط الإنتاج (`pipeline/`)
 * يدير تقدم العمل على الكتاب الفعلي الجاري تحويله.
@@ -56,7 +60,7 @@ islamic-interactive-books/
 * تحتوي على كتيبات التعليمات الإرشادية والقوالب القياسية (`SKILL.md`) لكل مرحلة من مراحل التحويل، مما يتيح استدعاء نماذج الذكاء الاصطناعي بدقة تامة وبنفس المعايير الصارمة.
 
 ### 4. ملفات التوثيق والمعايير في الجذر (Root Docs)
-* **[about.md](file:///c:/Users/Lenovo/OneDrive/Desktop/islamic-interactive-books/about.md):** الفلسفة العامة وتصميم الـ UI/UX ورابط Figma.
-* **[pipeline.md](file:///c:/Users/Lenovo/OneDrive/Desktop/islamic-interactive-books/pipeline.md):** شرح معماري للمراحل الأربع وواجهات المراجعة المخصصة.
-* **[code-standards.md](file:///c:/Users/Lenovo/OneDrive/Desktop/islamic-interactive-books/code-standards.md):** معايير الكود النظيف وقاعدة الحد الأقصى 300 سطر.
-* **[AGENTS.md](file:///c:/Users/Lenovo/OneDrive/Desktop/islamic-interactive-books/AGENTS.md):** موجه الوكلاء الذكي في بيئة العمل.
+* **[about.md](about.md):** الفلسفة العامة وتصميم الـ UI/UX ورابط Figma.
+* **[pipeline.md](pipeline.md):** شرح معماري للمراحل الأربع وواجهات المراجعة المخصصة.
+* **[code-standards.md](code-standards.md):** معايير الكود النظيف وقاعدة الحد الأقصى 300 سطر.
+* **[AGENTS.md](AGENTS.md):** موجه الوكلاء الذكي في بيئة العمل.
