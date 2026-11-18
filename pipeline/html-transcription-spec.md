@@ -34,8 +34,8 @@ python3 pipeline/scripts/validate_page_html.py data/books/al-nashr/html/1.html .
   </header>
   <section class="page-body">
     <p class="book-paragraph" data-block-id="p0003-b01" data-continued="true">
-      <span class="line" data-line="1">وأصحاب الليل » كذا رواه البيهقي فى شعب الإيمان وهو الصحيح وروينا</span>
-      <span class="line" data-line="2">فيه عن ابن عباس أيضا قال قال رسول الله صلى الله عليه وسلم «ثلاثة لا يكترثون</span>
+      <span class="line" data-line="1">[نص السطر 1 كما هو مطبوع]</span>
+      <span class="line" data-line="2">[نص السطر 2 كما هو مطبوع]</span>
     </p>
     <h2 class="section-title" data-block-id="p0003-b02"><span class="line" data-line="3">باب ...</span></h2>
     <div class="poem-bayt" data-block-id="p0003-b03">
