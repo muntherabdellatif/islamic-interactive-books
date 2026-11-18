@@ -1,0 +1,275 @@
+/* =====================================================================
+   TAJWEED SIMULATION & POETIC METRICS STYLES (tajweed.css)
+   Interactive Islamic Heritage Platform
+   ===================================================================== */
+
+/* ---------------- Poetic Manuscript Layout (Light Parchment) ---------------- */
+.poetic-page {
+  background-color: #FCF9F2;
+  background-image: radial-gradient(#F0E8D0 15%, transparent 16%);
+  background-size: 16px 16px;
+  color: #1A202C;
+}
+
+.poetic-header {
+  text-align: center;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid rgba(198, 155, 82, 0.4);
+}
+.poetic-meta-tag {
+  display: inline-block;
+  background: rgba(14, 56, 36, 0.08);
+  color: #0E3824;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+  border: 1px solid rgba(198, 155, 82, 0.3);
+}
+.poetic-title {
+  font-family: var(--font-manuscript);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #78350F;
+  letter-spacing: 0.5px;
+}
+.poetic-subtitle {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: #854D0E;
+  margin-top: 2px;
+}
+
+/* Poetic Verses (Two-Column Bayt Layout) */
+.verses-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bayt-row {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.4);
+}
+.bayt-row:hover {
+  background: rgba(198, 155, 82, 0.12);
+  border-color: rgba(198, 155, 82, 0.35);
+}
+.bayt-row.active-verse {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1.8px solid #10B981;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+  transform: scale(1.01);
+}
+.shatr {
+  font-family: var(--font-manuscript);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  font-weight: 600;
+}
+.shatr-first { text-align: right; }
+.shatr-second { text-align: left; }
+.bayt-sep {
+  text-align: center;
+  color: var(--gold-primary);
+  font-size: 0.75rem;
+}
+.rule-highlight {
+  background: rgba(16, 185, 129, 0.2);
+  color: #047857;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 4px;
+  border-bottom: 2px solid #10B981;
+}
+
+/* ---------------- Right Pane: Vocal & Acoustic Simulator ---------------- */
+.tajweed-simulator-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  background: radial-gradient(circle at 50% 30%, #0D3622 0%, #06190F 90%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top Simulator Bar */
+.sim-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.sim-title-group { display: flex; align-items: center; gap: 8px; }
+.sim-title { font-size: 1.05rem; font-weight: 800; color: #FFF; }
+.sim-badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34D399;
+  border: 1px solid #10B981;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+/* Mini Tree Preview in Corner */
+.sim-mini-tree {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(6, 25, 15, 0.7);
+  border: 1px solid rgba(198, 155, 82, 0.3);
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 0.75rem;
+  color: var(--amber-accent);
+}
+
+/* Big Vocal Letter Focus & Legend */
+.sim-hero-focus {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 14px;
+}
+.vocal-word-display {
+  font-family: var(--font-manuscript);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #10B981;
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.6);
+  letter-spacing: 2px;
+}
+.tajweed-legend {
+  display: flex;
+  gap: 8px;
+}
+.legend-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+.legend-pill.ikhfa {
+  background: rgba(16, 185, 129, 0.25);
+  color: #34D399;
+  border-color: #10B981;
+}
+.legend-pill.idgham {
+  background: rgba(239, 68, 68, 0.25);
+  color: #F87171;
+  border-color: #EF4444;
+}
+
+/* Anatomical Vocal Tract SVG */
+.anatomy-viewport {
+  flex: 1;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.anatomy-svg {
+  width: 100%;
+  max-height: 310px;
+}
+.anatomy-contour {
+  stroke: rgba(203, 213, 225, 0.7);
+  stroke-width: 2.4;
+  fill: rgba(15, 23, 42, 0.4);
+}
+.vocal-glow-zone {
+  fill: url(#greenGlowGrad);
+  filter: drop-shadow(0 0 14px rgba(16, 185, 129, 0.85));
+  animation: pulseGlow 1.8s infinite ease-in-out;
+}
+.organ-label {
+  fill: #34D399;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Audio Waveform & Player Controls */
+.sim-audio-panel {
+  background: rgba(6, 25, 15, 0.8);
+  border: 1px solid rgba(198, 155, 82, 0.3);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+.waveform-bars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 38px;
+  padding: 0 10px;
+}
+.w-bar {
+  width: 3.5px;
+  background: linear-gradient(180deg, #10B981, #047857);
+  border-radius: 3px;
+  transition: height 0.2s;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+}
+.sim-player-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.audio-ctrl-btn {
+  background: linear-gradient(135deg, #10B981, #047857);
+  border: none;
+  color: #FFF;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 0.9rem;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+  transition: transform 0.2s;
+}
+.audio-ctrl-btn:hover { transform: scale(1.08); }
+.voice-input-btn {
+  background: linear-gradient(135deg, rgba(198, 155, 82, 0.3), rgba(16, 185, 129, 0.25));
+  border: 1.5px solid #10B981;
+  color: #FFF;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s;
+}
+.voice-input-btn:hover {
+  background: #10B981;
+  color: #06190F;
+  box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.03); }
+}

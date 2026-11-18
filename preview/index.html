@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة التراث الإسلامي التفاعلي - شجرة القرارات الفقهية</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-viewport">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav">
+      <div class="nav-brand">
+        <div class="brand-emblem">
+          <svg viewBox="0 0 36 36" fill="none">
+            <rect x="3" y="3" width="30" height="30" rx="8" stroke="#C69B52" stroke-width="1.8" />
+            <polygon points="18,6 29,18 18,30 7,18" stroke="#FFD700" stroke-width="1.4" fill="rgba(198,155,82,0.15)" />
+            <circle cx="18" cy="18" r="4.5" fill="#FFD700" />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">منصة التراث التفاعلي</span>
+          <span class="brand-subtitle">Interactive Islamic Heritage</span>
+        </div>
+      </div>
+
+      <nav class="nav-segmented">
+        <button class="seg-item">شجرة الأسانيد</button>
+        <button class="seg-item">مسار علم التلاوة</button>
+        <button class="seg-item">مساحة تحفة الأطفال</button>
+        <button class="seg-item active">شجرة القرارات الفقهية</button>
+        <button class="seg-item">مسارات التعلم</button>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="book-switcher">
+          <button class="book-btn" id="btn-nashr">📖 كتاب النشر</button>
+          <button class="book-btn" id="btn-tuhfa">🎵 تحفة الأطفال</button>
+          <button class="book-btn active" id="btn-shuja">⚖️ متن أبي شجاع</button>
+        </div>
+        <button class="icon-btn" title="البحث"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></button>
+        <div class="user-avatar" title="المستخدم"><span>م</span></div>
+      </div>
+    </header>
+
+    <!-- Main Workspace: Fiqh Decision Tree View (Step 3) -->
+    <main class="split-workspace" id="view-shuja">
+      <!-- LEFT: Fiqh Manuscript Card -->
+      <section class="pane pane-manuscript">
+        <div class="manuscript-toolbar">
+          <div class="toolbar-side">
+            <span class="tool-chip">فقه العبادات الشافعي</span>
+            <span class="divider"></span>
+            <div class="page-stepper">
+              <button class="step-btn">◀</button>
+              <span class="step-label">صفحة <strong>8</strong> من 177</span>
+              <button class="step-btn">▶</button>
+            </div>
+          </div>
+          <div class="toolbar-side">
+            <button class="tool-btn active-gold">تحقيق دار المنهاج 📜</button>
+            <button class="tool-btn" title="حفظ علامة">🔖</button>
+          </div>
+        </div>
+
+        <div class="manuscript-scroll-area">
+          <article class="manuscript-page fiqh-page">
+            <div class="page-gold-frame">
+              <header class="fiqh-header">
+                <span class="fiqh-meta-tag">الفقه الشافعي • مختصر أبي شجاع</span>
+                <h1 class="fiqh-title">مَتْنُ الغَايَةِ وَالتَّقْرِيبِ</h1>
+                <p class="fiqh-subtitle">كِتَابُ الطَّهَارَةِ • فَصْلٌ فِي فَرَائِضِ الوُضُوءِ وَسُنَنِهِ</p>
+              </header>
+
+              <div class="page-body">
+                <p class="m-para" style="font-weight: 700; color: #78350F;">
+                  فَصْلٌ: وَفَرَائِضُ الوُضُوءِ سِتَّةُ أَشْيَاءَ:
+                </p>
+
+                <!-- Active Fiqh Clause (Linked to Node) -->
+                <div class="fiqh-clause active-clause" id="clause-niyyah">
+                  <span class="fiqh-num">١</span>
+                  <span style="font-weight: 800; color: #854D0E;">النِّيَّةُ عِنْدَ غَسْلِ الوَجْهِ:</span>
+                  بأن ينوي المتوضئ رفع الحدث، أو استباحة ما تجب له الصلاة، وتقترن النية بأول جزء مغسول من الوجه.
+                  <span class="linked-tag">مرتبط بقرار الشجرة ✦</span>
+                </div>
+
+                <div class="fiqh-clause" id="clause-wajh">
+                  <span class="fiqh-num">٢</span>
+                  <strong>وَغَسْلُ الوَجْهِ:</strong> جميعه طولاً من منابت شعر الرأس إلى الذقن، وعرضاً ما بين شحمتي الأذنين.
+                </div>
+
+                <div class="fiqh-clause" id="clause-yadayn">
+                  <span class="fiqh-num">٣</span>
+                  <strong>وَغَسْلُ اليَدَيْنِ إِلَى المِرْفَقَيْنِ:</strong> وما عليهما من شعر وظفر، وإدخال المرفقين في الغسل واجب.
+                </div>
+
+                <div class="fiqh-clause" id="clause-raas">
+                  <span class="fiqh-num">٤</span>
+                  <strong>وَمَسْحُ بَعْضِ الرَّأْسِ:</strong> من بشرة أو شعر داخل حده، ولو مسح شعرة واحدة أجزأه.
+                </div>
+
+                <div class="fiqh-clause" id="clause-rijlayn">
+                  <span class="fiqh-num">٥</span>
+                  <strong>وَغَسْلُ الرِّجْلَيْنِ إِلَى الكَعْبَيْنِ:</strong> إن لم يكن لابساً للخفين بالشروط المقررة.
+                </div>
+
+                <div class="fiqh-clause" id="clause-tartib">
+                  <span class="fiqh-num">٦</span>
+                  <strong>وَالتَّرْتِيبُ:</strong> عَلَى مَا ذَكَرْنَاهُ، فلو نكس غسله لم يصح ما لم يرتب.
+                </div>
+              </div>
+
+              <footer class="manuscript-footer">
+                <span class="folio-info">متن أبي شجاع • باب شروط الصلاة وأركانها</span>
+                <span class="page-number-box">٨</span>
+              </footer>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- RIGHT: Interactive Fiqh Decision Tree -->
+      <section class="pane pane-tool">
+        <div class="fiqh-tree-container">
+          <!-- Top Bar -->
+          <div class="fiqh-top-bar">
+            <div class="fiqh-title-group">
+              <h2 class="f-title">شجرة القرارات الفقهية وشبكة الشروط</h2>
+              <span class="f-badge">المعتمد عند الشافعية</span>
+            </div>
+            <div class="sim-mini-tree">
+              <span>⚖️</span>
+              <span>مخطط صحة العبادة</span>
+            </div>
+          </div>
+
+          <!-- Flowchart Decision SVG -->
+          <svg class="fiqh-svg" viewBox="0 0 680 440">
+            <!-- Connecting Edges -->
+            <path class="tree-edge" d="M340,40 L120,110" />
+            <path class="tree-edge active" d="M340,40 L340,110" />
+            <path class="tree-edge" d="M340,40 L560,110" />
+
+            <!-- Edge from Arkan to Clauses -->
+            <path class="tree-edge active" d="M340,150 L110,210" />
+            <path class="tree-edge active" d="M340,150 L200,210" />
+            <path class="tree-edge" d="M340,150 L290,210" />
+            <path class="tree-edge" d="M340,150 L380,210" />
+            <path class="tree-edge" d="M340,150 L470,210" />
+            <path class="tree-edge" d="M340,150 L560,210" />
+
+            <!-- Edge from Niyyah to Decision Rule -->
+            <path class="tree-edge active" d="M110,260 L110,320" />
+
+            <!-- Root Node -->
+            <g class="f-node node-root" transform="translate(240, 15)">
+              <rect width="200" height="42" rx="10" />
+              <text x="100" y="26" text-anchor="middle" fill="#FFD700" font-size="14" font-weight="800">أَحْكَامُ الوُضُوءِ وَالطَّهَارَةِ</text>
+            </g>
+
+            <!-- Categories -->
+            <g class="f-node node-category" transform="translate(40, 100)">
+              <rect width="160" height="38" rx="8" />
+              <text x="80" y="24" text-anchor="middle" fill="#CBD5E1" font-size="12" font-weight="700">شروط الصحة (٧ شروط)</text>
+            </g>
+            <g class="f-node node-category" transform="translate(260, 100)">
+              <rect width="160" height="38" rx="8" style="stroke:#FFD700; stroke-width:2.2;" />
+              <text x="80" y="24" text-anchor="middle" fill="#FFD700" font-size="13" font-weight="800">الفرائض والأركان (٦)</text>
+            </g>
+            <g class="f-node node-category" transform="translate(480, 100)">
+              <rect width="160" height="38" rx="8" />
+              <text x="80" y="24" text-anchor="middle" fill="#CBD5E1" font-size="12" font-weight="700">السنن والمبطلات</text>
+            </g>
+
+            <!-- Arkan Items -->
+            <!-- 1. Niyyah (ACTIVE SELECTED) -->
+            <g class="f-node node-item selected" transform="translate(50, 195)">
+              <rect width="120" height="52" rx="8" />
+              <text x="60" y="22" text-anchor="middle" fill="#FFF" font-size="11" font-weight="800">١. النية</text>
+              <text x="60" y="40" text-anchor="middle" class="ruling-badge-farad">فرض مقترن</text>
+            </g>
+
+            <!-- 2. Wajh -->
+            <g class="f-node node-item" transform="translate(180, 195)">
+              <rect width="80" height="52" rx="8" />
+              <text x="40" y="22" text-anchor="middle" fill="#FFF" font-size="11" font-weight="700">٢. الوجه</text>
+              <text x="40" y="40" text-anchor="middle" class="ruling-badge-farad">غسل تام</text>
+            </g>
+
+            <!-- 3. Yadayn -->
+            <g class="f-node node-item" transform="translate(270, 195)">
+              <rect width="80" height="52" rx="8" />
+              <text x="40" y="22" text-anchor="middle" fill="#FFF" font-size="11" font-weight="700">٣. اليدان</text>
+              <text x="40" y="40" text-anchor="middle" class="ruling-badge-farad">مع المرفقين</text>
+            </g>
+
+            <!-- 4. Ra's -->
+            <g class="f-node node-item" transform="translate(360, 195)">
+              <rect width="80" height="52" rx="8" />
+              <text x="40" y="22" text-anchor="middle" fill="#FFF" font-size="11" font-weight="700">٤. الرأس</text>
+              <text x="40" y="40" text-anchor="middle" class="ruling-badge-farad">مسح بعضه</text>
+            </g>
+
+            <!-- 5. Rijlayn -->
+            <g class="f-node node-item" transform="translate(450, 195)">
+              <rect width="80" height="52" rx="8" />
+              <text x="40" y="22" text-anchor="middle" fill="#FFF" font-size="11" font-weight="700">٥. الرجلان</text>
+              <text x="40" y="40" text-anchor="middle" class="ruling-badge-farad">مع الكعبين</text>
+            </g>
+
+            <!-- 6. Tartib -->
+            <g class="f-node node-item" transform="translate(540, 195)">
+              <rect width="80" height="52" rx="8" />
+              <text x="40" y="22" text-anchor="middle" fill="#FFF" font-size="11" font-weight="700">٦. الترتيب</text>
+              <text x="40" y="40" text-anchor="middle" class="ruling-badge-farad">شرط صحة</text>
+            </g>
+
+            <!-- Decision Condition Leaf: اقتران النية -->
+            <g class="f-node" transform="translate(30, 310)">
+              <rect width="160" height="46" rx="8" fill="#0A2216" stroke="#10B981" stroke-width="1.8" />
+              <text x="80" y="20" text-anchor="middle" fill="#34D399" font-size="10.5" font-weight="800">قرار: اقتران النية بالغسل</text>
+              <text x="80" y="36" text-anchor="middle" fill="#CBD5E1" font-size="9">إن تأخرت بطل الوضوء</text>
+            </g>
+          </svg>
+
+          <!-- Floating Fiqh Ruling Inspector Card -->
+          <aside class="fiqh-inspector-card">
+            <div class="f-card-header">
+              <span class="f-card-tag">فرض مجمع عليه</span>
+              <span style="font-size: 0.72rem; color: #94A3B8; font-family: monospace;">#RULING-01</span>
+            </div>
+            <h3 class="f-rule-title">الفرض الأول: النية ومحلها القلب</h3>
+            <div class="f-evidence-box">
+              «إِنَّمَا الأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى» [متفق عليه]
+            </div>
+            <p class="f-impact-text">
+              <strong>الأثر الفقهي:</strong> تجب النية مقرونة بأول جزء يُغسل من الوجه. فإن سبقت أو تأخرت لم يصح الوضوء بالإجماع.
+            </p>
+            <div class="f-card-action">
+              <span style="font-size: 0.72rem; color: #10B981; font-weight: 700;">● متطابق مع منطوق المتن</span>
+              <button class="expand-btn">محاكي صحة العبادة ↗</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
