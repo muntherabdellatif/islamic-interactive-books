@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./data/books/*/pdf/**)",
+      "Read(./data/books/*/raw-data/**)",
+      "Read(./data/books/*/formatted-data/**)",
+      "Read(./data/books/*/source/**)",
+      "Read(./data/books/*/mapper.json)"
+    ]
+  }
+}
