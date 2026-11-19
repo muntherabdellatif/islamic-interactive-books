@@ -48,7 +48,4 @@
 
 ---
 
-### خط التفريغ الموازي بصيغة JSON
-* المسار: `pipeline/transcription/books/al-nashr/<صفحة>.json` — صفحات 1–150 معتمدة.
-* **تنبيه:** لم تُقارَن بعد مع HTML في `data/books/al-nashr/html/`؛ يُنصح بمقارنة آلية قبل اعتماد أحدهما مرجعاً.
-* كتب إضافية محلية: `al-usul-al-thalatha`، `matn-abi-shuja`، `tuhfat-al-atfal`.
+> **ملاحظة:** خط تفريغ موازٍ بصيغة JSON (`pipeline/transcription/books/al-nashr/` + `pipeline/server.js`) كان تجريبياً لصفحات 1–150 ولم يُقارَن قط مع HTML؛ تمت إزالته — HTML في `data/books/al-nashr/html/` هو المرجع الوحيد الآن. خط JSON لا يزال موجوداً لكتب أخرى محلية: `al-usul-al-thalatha`، `matn-abi-shuja`، `tuhfat-al-atfal`.

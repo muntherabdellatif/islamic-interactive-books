@@ -32,9 +32,7 @@ islamic-interactive-books/
 ├── pipeline/                         # مجلد خط الإنتاج وإدارة المعالجة الحالية
 │   ├── status.md                     # تتبع حالة الكتاب والحزم قيد المعالجة حالياً
 │   ├── html-transcription-spec.md    # المواصفات الملزمة للمرحلة 1 (HTML مطابق للشكل)
-│   ├── templates/                    # قوالب HTML للكتب (al_nashr.html)
-│   ├── transcription/                # خط التفريغ بصيغة JSON (processor.ts + books/<كتاب>/<صفحة>.json + approvals.json)
-│   ├── server.js                     # خادم المعاينة المحلي
+│   ├── transcription/                # خط تفريغ JSON تجريبي لكتب أخرى (processor.ts + books/<كتاب>/<صفحة>.json) — غير مستخدم لـ al-nashr
 │   ├── reviews/                      # تقارير مراجعة ومطابقة كل حزمة (batch-XXX.md)
 │   └── scripts/                      # crop_page.py (تقطيع الصفحة) و validate_page_html.py (التحقق البنيوي)
 │
