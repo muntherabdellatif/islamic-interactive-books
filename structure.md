@@ -15,7 +15,6 @@ islamic-interactive-books/
 ├── constants/                        # الثوابت المركزية العامة للمشروع (pipeline.ts)
 ├── types/                            # تعريفات TypeScript الصارمة (pipeline.ts)
 ├── preview/                          # تطبيق المعاينة (app.js + أنماط الصفحات CSS)
-├── scratch/                          # أدوات مؤقتة (take_screenshot.js)
 │
 ├── data/                             # البيانات التراثية والمصادر المرجعية
 │   └── books/                        # مجلد الكتب المستهدفة

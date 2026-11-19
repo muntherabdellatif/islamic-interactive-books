@@ -8,7 +8,7 @@
 
 **للاستئناف في جلسة جديدة:** اقرأ `CLAUDE.md` ثم هذا الملف. الوحدة = 10 صفحات: نسخة A + B (`transcriber.md`) ثم محكّم (`adjudicator.md`) ثم `validate_page_html.py`. المتابعة من صفحة **161**.
 
-> **ملاحظة بيئة Windows:** `python3`/`python` قد يُحيلان إلى واجهة Microsoft Store المعطّلة. استدعِ المُفسِّر مباشرة، مثلاً `C:\Users\Lenovo\AppData\Local\Programs\Python\Python312\python.exe`، مع `PYTHONIOENCODING=utf-8` لتفادي أخطاء cp1252 عند طباعة نص عربي (مثلاً في `diff_unit.py`).
+> **ملاحظة بيئة Windows:** `python3` دائماً يُحيل إلى واجهة Microsoft Store المعطّلة على هذا الجهاز (حتى داعي خادم `review/`: `python3 -m http.server 8000` يطبع رسالة تثبيت ولا يفتح أي منفذ). استعمل `python` (لا `python3`) — هو المُفسِّر الحقيقي في PATH هنا. لطباعة نص عربي (مثلاً `diff_unit.py`) أضف `PYTHONIOENCODING=utf-8` لتفادي أخطاء cp1252. إن تعطل حتى `python`، استدعِ المسار الكامل: `C:\Users\Lenovo\AppData\Local\Programs\Python\Python312\python.exe`.
 
 ---
 
