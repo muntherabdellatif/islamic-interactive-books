@@ -1,9 +1,6 @@
 # Islamic Interactive Books — agent quick index
 
-Read this first; do NOT scan the repo. Rules live in `AGENTS.md` (300-line files, strict TS, constants/, DRY).
-
-## What it is
-Pipeline turning classical Arabic books (scans) into interactive visual experiences. First book: al-Nashr (Ibn al-Jazari), 985 page images.
+Pipeline: classical Arabic book scans → interactive HTML. Active book: al-Nashr (Ibn al-Jazari), 985 pages. Read this file first; do NOT scan the repo.
 
 ## Where things are (open only what the task needs)
 | Need | File |
