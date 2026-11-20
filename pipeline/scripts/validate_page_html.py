@@ -9,7 +9,6 @@ import sys
 from html.parser import HTMLParser
 from pathlib import Path
 
-PAGES_JSON = Path(__file__).resolve().parents[2] / "data/books/al-nashr/pages.json"
 BLOCK_ID_RE = re.compile(r"^p(\d{4})-([bf])(\d{2})$")
 BLOCK_CLASSES = {
     "chapter-title", "section-title", "book-paragraph", "sanad-block",
@@ -18,8 +17,13 @@ BLOCK_CLASSES = {
 VOID_TAGS = {"br", "img", "hr", "meta", "link", "input"}
 
 
-def printed_location(page: int) -> tuple[int, int]:
-    volumes = json.loads(PAGES_JSON.read_text(encoding="utf-8"))["volumes"]
+def printed_location(path: Path, page: int, pages_json: Path | None = None) -> tuple[int, int]:
+    # default: data/books/<book>/html/<N>.html -> data/books/<book>/pages.json
+    if pages_json is None:
+        pages_json = path.resolve().parents[1] / "pages.json"
+    if not pages_json.exists():
+        return 1, page  # single-volume book: printed page == image number
+    volumes = json.loads(pages_json.read_text(encoding="utf-8"))["volumes"]
     for vol in volumes:
         if vol["first_image"] <= page <= vol["last_image"]:
             return vol["volume"], page - vol["image_offset"]
@@ -84,7 +88,7 @@ class PageParser(HTMLParser):
                 self.errors.append(f"text outside span.line: {data.strip()[:40]!r}")
 
 
-def validate(path: Path) -> list[str]:
+def validate(path: Path, pages_json: Path | None = None) -> list[str]:
     try:
         page = int(path.stem)
     except ValueError:
@@ -98,7 +102,7 @@ def validate(path: Path) -> list[str]:
     if len(parser.articles) != 1:
         return errors + [f"expected exactly one <article>, found {len(parser.articles)}"]
     art = parser.articles[0]
-    vol, printed = printed_location(page)
+    vol, printed = printed_location(path, page, pages_json)
     expected = {"data-page": str(page), "data-printed-vol": str(vol),
                 "data-printed-page": str(printed), "dir": "rtl", "lang": "ar"}
     for key, value in expected.items():
@@ -122,11 +126,15 @@ def validate(path: Path) -> list[str]:
 
 
 def main(argv: list[str]) -> int:
+    pages_json = None
+    if argv and argv[0] == "--book":
+        pages_json = Path(__file__).resolve().parents[2] / "data/books" / argv[1] / "pages.json"
+        argv = argv[2:]
     failed = 0
     for arg in argv:
         path = Path(arg)
         try:
-            errors = validate(path)
+            errors = validate(path, pages_json)
         except (OSError, ValueError) as err:
             errors = [str(err)]
         if errors:

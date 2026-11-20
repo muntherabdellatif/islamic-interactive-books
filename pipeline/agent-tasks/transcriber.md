@@ -1,19 +1,19 @@
 # مهمة الناسخ (Blind transcriber) — تعليمات ثابتة
 
-أنت تنسخ صفحات ممسوحة من كتاب «النشر في القراءات العشر» إلى HTML مطابق للشكل. المستودع: /home/user/islamic-interactive-books.
+أنت تنسخ صفحات ممسوحة من كتاب إلى HTML مطابق للشكل. المستودع: المسار المطلق المذكور في رسالة المهمة (Windows؛ استعمل `python` لا `python3`، وأضف `PYTHONIOENCODING=utf-8` قبل أي أمر يطبع نصاً عربياً).
 
-المعاملات تأتي في رسالة المهمة: `FIRST`, `LAST` (أرقام الصور)، `PASS` (A أو B)، `OUT` (مجلد الإخراج)، `CROPS` (مجلد شرائح خاص بك).
+المعاملات تأتي في رسالة المهمة: `BOOK` (اسم مجلد الكتاب تحت `data/books/`)، `FIRST`, `LAST` (أرقام الصور)، `PASS` (A أو B)، `OUT` (مجلد الإخراج، مسار مطلق)، `CROPS` (مجلد شرائح خاص بك، مسار مطلق)، `SCALE`/`STRIPS` (اختياريان لمعايرة `crop_page.py`؛ افتراضياً 6/1.3، استعمل قيماً أعلى مثل 8/1.6 إن كان الخط مشكّلاً بكثافة).
 
 ## قاعدة العمى (إلزامية)
-هذه نسخة مستقلة. ممنوع فتح أو قراءة أو سرد أو grep لأي من: `data/books/al-nashr/html/`، `pipeline/reviews/`، ومجلدي `passA/` و`passB/` في الـ scratchpad (باستثناء كتابة ملفاتك أنت في `OUT`). اعمل من الصور والمواصفات فقط. لا تقرأ ولا تنسخ أي مثال إملائي من الوثائق.
+هذه نسخة مستقلة. ممنوع فتح أو قراءة أو سرد أو grep لأي من: `data/books/BOOK/html/`، `pipeline/reviews/`، ومجلدي `passA/` و`passB/` في الـ scratchpad (باستثناء كتابة ملفاتك أنت في `OUT`). اعمل من الصور والمواصفات فقط. لا تقرأ ولا تنسخ أي مثال إملائي من الوثائق.
 
 ## الخطوات
 1. اقرأ المواصفات الملزمة: `pipeline/html-transcription-spec.md` (انتبه للبند 8: لا تطويل، المسافات كما طُبعت، «ى» كما طُبعت، التمييز الدقيق بين إ/أ/ا، الشدّة فقط إن طُبعت بوضوح).
 2. لكل صفحة N من FIRST إلى LAST:
-   * `python3 pipeline/scripts/crop_page.py data/books/al-nashr/images/N.webp CROPS --strips 6 --scale 1.3` ثم اقرأ كل الشرائح (تتداخل قليلاً؛ لا تكرر الأسطر).
+   * `python pipeline/scripts/crop_page.py data/books/BOOK/images/N.webp CROPS --strips STRIPS --scale SCALE` ثم اقرأ كل الشرائح (تتداخل قليلاً؛ لا تكرر الأسطر).
    * انسخ سطراً بسطر حرفياً واكتب `OUT/N.html` (أداة Write).
    * أعد قراءة كل شريحة وقارنها بملفك سطراً سطراً (عدد الأسطر، كل كلمة، الهمزات، الأقواس والاقتباس) وصحح.
-   * شغّل `python3 pipeline/scripts/validate_page_html.py OUT/N.html` حتى ينجح.
+   * شغّل `python pipeline/scripts/validate_page_html.py --book BOOK OUT/N.html` حتى ينجح.
 3. الكلمة غير المؤكدة: `<span class="uncertain">…</span>`؛ غير المقروءة: `<span class="illegible">[…]</span>`. لا تخمّن بصمت. لا تنسخ الخربشات الهامشية بخط اليد ولا بقع الورق.
 4. اكتب فقط داخل OUT. لا تعدل ملفات المستودع ولا تعمل commit.
 

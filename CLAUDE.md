@@ -1,6 +1,6 @@
 # Islamic Interactive Books — agent quick index
 
-Pipeline: classical Arabic book scans → interactive HTML. Active book: al-Nashr (Ibn al-Jazari), 985 pages. Read this file first; do NOT scan the repo.
+Pipeline: classical Arabic book scans → interactive HTML. Active book: Tuhfat al-Atfal (al-Jamzuri), 29 pages — al-Nashr (985 pages) is intentionally paused, see `pipeline/status.md`. Read this file first; do NOT scan the repo.
 
 ## Where things are (open only what the task needs)
 | Need | File |

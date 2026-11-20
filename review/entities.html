@@ -1,0 +1,221 @@
+<!doctype html>
+<!--
+  Stage-2 entity review: highlights extracted entities over the approved stage-1 HTML.
+  Run from the repository root:  python -m http.server 8000
+  Then open:                     http://localhost:8000/review/entities.html?page=5
+  Click a highlighted span (or a row in the right list) to see its JSON.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مراجعة الكيانات المستخرجة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="page-style.css">
+<style>
+  :root {
+    --bg: #f6f3ec; --panel: #fffdf8; --ink: #1f1b16; --muted: #7a7064; --line: #e4ddd0;
+    --chapter: #6b4fa0; --bayt: #2f6f5e; --rule: #b5651d; --letter_set: #1d6fa5;
+    --mnemonic: #a5331d; --example_word: #2a8f6c; --definition: #8a7a1d; --person: #555;
+    --document_section: #999;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #171512; --panel: #201d19; --ink: #ece6dc; --muted: #9a9083; --line: #36312a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, sans-serif; }
+  .toolbar { position: sticky; top: 0; z-index: 2; display: flex; gap: 8px; align-items: center;
+    padding: 8px 16px; background: var(--panel); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .toolbar input { width: 70px; padding: 4px 6px; font: inherit; }
+  .toolbar button, .toolbar a.btn { padding: 4px 12px; font: inherit; cursor: pointer; text-decoration: none; color: inherit; }
+  .meta { color: var(--muted); font-size: 13px; }
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 4px; }
+  .legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .layout { display: grid; grid-template-columns: 1fr 1fr 320px; gap: 12px; padding: 12px 16px; }
+  @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
+  .pane { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; overflow: auto; max-height: calc(100vh - 90px); }
+  .html-pane { padding: 16px 34px 16px 24px; font-family: "Amiri", serif; font-size: 19px; line-height: 1.9; }
+  .list-pane { padding: 8px; font-size: 13px; }
+  .list-pane .row { padding: 5px 8px; border-radius: 4px; cursor: pointer; border: 1px solid transparent; }
+  .list-pane .row:hover { border-color: var(--line); }
+  .list-pane .row.active { background: color-mix(in srgb, var(--ink) 10%, transparent); }
+  .list-pane .row .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-inline-end: 6px; }
+  .detail-pane { padding: 10px; font-size: 13px; }
+  .detail-pane pre { white-space: pre-wrap; word-break: break-word; font-size: 12px; direction: ltr; text-align: left; }
+  .ent { border-radius: 2px; padding: 0 1px; cursor: pointer; }
+  .ent.active { outline: 2px solid var(--ink); }
+  .needs-review { text-decoration: underline wavy var(--rule); }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button id="prev" title="السابقة">→ السابقة</button>
+  <input id="page" type="number" min="1" max="29" aria-label="رقم الصفحة">
+  <button id="next" title="التالية">التالية ←</button>
+  <a class="btn" href="index.html">مراجعة المرحلة ١</a>
+  <a class="btn" href="#" id="treeBtn">شجرة الكتاب</a>
+  <span id="meta" class="meta"></span>
+  <span class="legend" id="legend"></span>
+</div>
+<div class="layout">
+  <div class="pane html-pane" id="html"></div>
+  <div class="pane list-pane" id="list"></div>
+  <div class="pane detail-pane" id="detail">اختر كياناً لعرض تفاصيله.</div>
+</div>
+<script>
+const BOOK = "../data/books/tuhfat-al-atfal";
+const MAX_PAGE = 29;
+const TYPE_LABEL = { chapter: "باب", bayt: "بيت", tajweed_rule: "حكم", letter_set: "مجموعة حروف",
+  mnemonic: "رمز", example_word: "مثال", definition: "تعريف", person: "شخص", document_section: "قسم وثيقة" };
+let ENTITIES = [];
+const pageInput = document.getElementById("page");
+const htmlPane = document.getElementById("html");
+const listPane = document.getElementById("list");
+const detailPane = document.getElementById("detail");
+
+function currentPage() {
+  const n = Number(new URLSearchParams(location.search).get("page"));
+  return Number.isInteger(n) && n >= 1 && n <= MAX_PAGE ? n : 1;
+}
+
+async function loadEntities() {
+  const res = await fetch(`${BOOK}/entities.json`, { cache: "no-store" });
+  const data = await res.json();
+  ENTITIES = data.entities;
+  const types = [...new Set(ENTITIES.map((e) => e.type))];
+  document.getElementById("legend").innerHTML = types
+    .map((t) => `<span><i style="background:var(--${t})"></i>${TYPE_LABEL[t] || t}</span>`)
+    .join("");
+}
+
+function entitiesOnPage(n) {
+  return ENTITIES.filter((e) => e.anchors.some((a) => a.page === n));
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+}
+
+// Wrap the first/occurrence-th match of `quote` inside a line element with a highlight span.
+function highlightQuote(lineEl, quote, occurrence, entity) {
+  const walker = document.createTreeWalker(lineEl, NodeFilter.SHOW_TEXT);
+  let seen = 0;
+  let node;
+  while ((node = walker.nextNode())) {
+    const idx = node.textContent.indexOf(quote);
+    if (idx === -1) continue;
+    seen += 1;
+    if (seen !== (occurrence || 1)) continue;
+    const range = document.createRange();
+    range.setStart(node, idx);
+    range.setEnd(node, idx + quote.length);
+    const mark = document.createElement("span");
+    mark.className = `ent ent-${entity.type}`;
+    mark.style.background = `color-mix(in srgb, var(--${entity.type}) 30%, transparent)`;
+    mark.dataset.entityId = entity.id;
+    range.surroundContents(mark);
+    return;
+  }
+}
+
+function applyHighlights(pageNum) {
+  for (const e of entitiesOnPage(pageNum)) {
+    for (const a of e.anchors.filter((a) => a.page === pageNum)) {
+      const block = htmlPane.querySelector(`[data-block-id="${a.block_id}"]`);
+      if (!block) continue;
+      let target = block;
+      if (a.line) target = block.querySelector(`.line[data-line="${a.line}"]`) || block;
+      if (a.quote) {
+        highlightQuote(target, a.quote, a.occurrence, e);
+      } else {
+        target.classList.add("ent", `ent-${e.type}`);
+        target.style.outline = `2px solid color-mix(in srgb, var(--${e.type}) 55%, transparent)`;
+        target.style.outlineOffset = "2px";
+        target.dataset.entityId = e.id;
+      }
+      if (e.needs_review) target.classList.add("needs-review");
+    }
+  }
+}
+
+function renderList(pageNum) {
+  const rows = entitiesOnPage(pageNum)
+    .map((e) => `<div class="row" data-id="${e.id}"><span class="dot" style="background:var(--${e.type})"></span>
+      <b>${TYPE_LABEL[e.type] || e.type}</b> — ${escapeHtml(e.label_ar)} ${e.needs_review ? "⚠️" : ""}</div>`)
+    .join("");
+  listPane.innerHTML = rows || "<p>لا توجد كيانات على هذه الصفحة.</p>";
+  listPane.querySelectorAll(".row").forEach((row) => {
+    row.onclick = () => showDetail(row.dataset.id);
+  });
+}
+
+function showDetail(id) {
+  const e = ENTITIES.find((x) => x.id === id);
+  if (!e) return;
+  document.querySelectorAll(".ent.active").forEach((n) => n.classList.remove("active"));
+  document.querySelectorAll(`[data-entity-id="${id}"]`).forEach((n) => n.classList.add("active"));
+  document.querySelectorAll(".list-pane .row").forEach((r) => r.classList.toggle("active", r.dataset.id === id));
+  const otherPages = [...new Set(e.anchors.map((a) => a.page))].filter((p) => p !== currentPage());
+  const jumpLinks = otherPages.map((p) => `<a href="?page=${p}">صفحة ${p}</a>`).join(" · ");
+  detailPane.innerHTML = `<div><b>${escapeHtml(e.id)}</b></div>
+    ${e.review_note ? `<p style="color:var(--rule)">⚠️ ${escapeHtml(e.review_note)}</p>` : ""}
+    ${jumpLinks ? `<p>مرتبط أيضاً بـ: ${jumpLinks}</p>` : ""}
+    <pre>${escapeHtml(JSON.stringify(e, null, 2))}</pre>`;
+}
+
+async function show(n) {
+  pageInput.value = n;
+  history.replaceState(null, "", `?page=${n}`);
+  detailPane.innerHTML = "اختر كياناً لعرض تفاصيله.";
+  try {
+    const res = await fetch(`${BOOK}/html/${n}.html`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    htmlPane.innerHTML = await res.text();
+    applyHighlights(n);
+    renderList(n);
+    document.getElementById("meta").textContent = `صفحة ${n} · ${entitiesOnPage(n).length} كيان`;
+    htmlPane.querySelectorAll(".ent").forEach((el) => {
+      el.onclick = (ev) => { ev.stopPropagation(); showDetail(el.dataset.entityId); };
+    });
+  } catch (err) {
+    htmlPane.textContent = `تعذّر تحميل الصفحة (${err.message}).`;
+  }
+}
+
+function renderTree() {
+  const chapters = ENTITIES.filter((e) => e.type === "chapter").sort((a, b) => a.metadata.order - b.metadata.order);
+  const byChapter = (id) => ENTITIES.filter((e) => e.type === "bayt" && e.metadata.chapter_id === id);
+  const html = chapters
+    .map((c) => {
+      const baytList = byChapter(c.id)
+        .map((b) => `<li>بيت ${b.metadata.number}: ${escapeHtml(b.metadata.shatr1_text)} / ${escapeHtml(b.metadata.shatr2_text)}</li>`)
+        .join("");
+      return `<details open><summary><a href="?page=${c.anchors[0].page}">${escapeHtml(c.label_ar)}</a> (${c.metadata.bayt_range[0]}-${c.metadata.bayt_range[1]})</summary><ul>${baytList}</ul></details>`;
+    })
+    .join("");
+  listPane.innerHTML = `<button id="backBtn">⟵ رجوع لصفحة ${currentPage()}</button>${html}`;
+  document.getElementById("backBtn").onclick = () => renderList(currentPage());
+}
+
+document.getElementById("treeBtn").onclick = (e) => { e.preventDefault(); renderTree(); };
+const go = (d) => show(Math.min(MAX_PAGE, Math.max(1, Number(pageInput.value) + d)));
+document.getElementById("prev").onclick = () => go(-1);
+document.getElementById("next").onclick = () => go(1);
+pageInput.onchange = () => go(0);
+document.addEventListener("keydown", (e) => {
+  if (e.target === pageInput) return;
+  if (e.key === "ArrowLeft") go(1);
+  if (e.key === "ArrowRight") go(-1);
+});
+
+(async () => {
+  await loadEntities();
+  show(currentPage());
+})();
+</script>
+</body>
+</html>

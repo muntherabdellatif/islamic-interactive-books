@@ -6,22 +6,22 @@
 
 | | المسار |
 | :--- | :--- |
-| صورة الصفحة | `data/books/al-nashr/images/<N>.webp` |
-| ملف الـ HTML الناتج | `data/books/al-nashr/html/<N>.html` |
+| صورة الصفحة | `data/books/<BOOK>/images/<N>.webp` |
+| ملف الـ HTML الناتج | `data/books/<BOOK>/html/<N>.html` |
 | تقرير مراجعة الحزمة | `pipeline/reviews/batch-XXX.md` |
 
-* `N` هو رقم الصورة (1–985) ويُستخدم كقيمة `data-page`.
-* المجلد والصفحة المطبوعة يُحسبان من [pages.json](../data/books/al-nashr/pages.json): الصور 1–510 = المجلد 1 (الصفحة = N)، الصور 511–985 = المجلد 2 (الصفحة = N − 510).
-* الحزمة = 20 صورة: `batch-001` = 1–20، `batch-002` = 21–40، … `batch-050` = 981–985.
+* `BOOK` اسم الكتاب النشط حالياً (انظر `pipeline/status.md`)، و`N` رقم الصورة ويُستخدم كقيمة `data-page`.
+* المجلد والصفحة المطبوعة: إن وُجد `data/books/<BOOK>/pages.json` تُحسب منه (مجلدات متعددة بحسب `first_image`/`last_image`/`image_offset`)؛ وإلا فالكتاب مجلد واحد والصفحة المطبوعة = N مباشرة (`data-printed-vol="1"`).
+* الحزمة = 20 صورة (أو الكتاب كله إن كان أقصر): `batch-001` = 1–20، `batch-002` = 21–40، …
 
 ## أدوات مساعدة
 
 ```bash
 # تقطيع الصفحة إلى شرائح أفقية متداخلة لقراءة الخط الدقيق
-python3 pipeline/scripts/crop_page.py data/books/al-nashr/images/3.webp <output-dir>
+python3 pipeline/scripts/crop_page.py data/books/<BOOK>/images/3.webp <output-dir>
 
 # التحقق البنيوي من ملفات الـ HTML
-python3 pipeline/scripts/validate_page_html.py data/books/al-nashr/html/1.html ...
+python3 pipeline/scripts/validate_page_html.py data/books/<BOOK>/html/1.html ...
 ```
 
 ## بنية الملف (جزء HTML وليس مستنداً كاملاً)

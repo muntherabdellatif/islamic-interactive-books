@@ -1,48 +1,178 @@
 /*
   Print-faithful layout for stage-1 page HTML (see pipeline/html-transcription-spec.md).
-  Works on every data/books/*/html/N.html fragment, present and future.
-  The book is RTL; in a RTL grid column 1 is the RIGHT edge.
-*/
-.manuscript-page { margin: 0 auto; }
+  Works on every data/books/*/
+html/N.html fragment,
+present and future. The book is RTL;
+
+in a RTL grid column 1 is the RIGHT edge. */ .manuscript-page {
+  margin: 0 auto;
+}
 
 /* Header: running title centred, page number on the outer corner the print uses
    (odd printed pages: number at the left, even pages: at the right). */
 .page-header {
-  display: grid; grid-template-columns: 3em 1fr 3em; align-items: baseline;
-  border-bottom: 1px solid currentColor; padding-bottom: 2px; margin-bottom: 8px; font-weight: 700;
+  display: grid;
+  grid-template-columns: 3em 1fr 3em;
+  align-items: baseline;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
-.page-header .running-title { grid-column: 2; grid-row: 1; text-align: center; }
-.page-header .page-number { grid-row: 1; }
-.manuscript-page[data-side="left"] .page-number { grid-column: 3; justify-self: start; }
-.manuscript-page[data-side="right"] .page-number { grid-column: 1; justify-self: end; }
+
+.page-header .running-title {
+  grid-column: 2;
+  grid-row: 1;
+  text-align: center;
+  font-size: 1.15em;
+  color: #7a2e22;
+}
+
+.page-header .page-number {
+  grid-row: 1;
+}
+
+.manuscript-page[data-side="left"] .page-number {
+  grid-column: 3;
+  justify-self: start;
+}
+
+.manuscript-page[data-side="right"] .page-number {
+  grid-column: 1;
+  justify-self: end;
+}
 
 /* Body: every printed line fills the text block (justified), like the print. */
-.page-body { margin: 0 auto; }
-.line { display: block; text-align: justify; text-align-last: justify; white-space: nowrap; }
-.book-paragraph, .sanad-block, .footnote, .page-note { margin: 0; }
-.book-paragraph:not([data-continued="true"]) > .line:first-child,
-.sanad-block:not([data-continued="true"]) > .line:first-child { padding-inline-start: 1.6em; }
+.page-body {
+  margin: 0 auto;
+}
+
+.line {
+  display: block;
+  text-align: justify;
+  text-align-last: justify;
+  white-space: nowrap;
+}
+
+.book-paragraph,
+.sanad-block,
+.footnote,
+.page-note {
+  margin: 0;
+}
+
+.book-paragraph:not([data-continued="true"])>.line:first-child,
+.sanad-block:not([data-continued="true"])>.line:first-child {
+  padding-inline-start: 1.6em;
+}
 
 /* The closing line of a paragraph is short and starts at the right edge. */
-.book-paragraph:not([data-continues="true"]) > .line:last-child,
-.sanad-block:not([data-continues="true"]) > .line:last-child,
-.footnote:not([data-continues="true"]) > .line:last-child { text-align-last: start; }
+.book-paragraph:not([data-continues="true"])>.line:last-child,
+.sanad-block:not([data-continues="true"])>.line:last-child,
+.footnote:not([data-continues="true"])>.line:last-child {
+  text-align-last: start;
+}
 
 /* Titles, notes and verse are centred. */
-.chapter-title, .section-title { text-align: center; margin: 4px 0; font-size: 1.1em; }
-.chapter-title .line, .section-title .line, .page-note .line { text-align: center; text-align-last: center; }
-.poem-bayt .line { text-align-last: center; }
-.poem-bayt .shatr-1, .poem-bayt .shatr-2 { display: inline-block; margin: 0 1.2em; }
-.col { display: inline-block; margin: 0 0.8em; }
+.chapter-title,
+.section-title {
+  text-align: center;
+  margin: 4px 0;
+  font-size: 1.1em;
+  color: #7a2e22;
+}
 
-.page-footnotes { font-size: 0.88em; margin-top: 10px; }
-.page-footnotes::before { content: ""; display: block; width: 30%; margin: 0 0 6px auto; border-top: 1px solid currentColor; }
+.chapter-title {
+  font-size: 1.5em;
+  margin: 10px 0;
+}
 
-.sanad-block { border-inline-start: 0; }
-.uncertain { background: color-mix(in srgb, #b5651d 25%, transparent); border-bottom: 1px dashed #b5651d; }
-.illegible { color: #b23a3a; }
-[data-blank="true"] .page-body::after { content: "صفحة فارغة / بلا نص"; display: block; text-align: center; opacity: .6; }
+.chapter-title .line,
+.section-title .line,
+.page-note .line {
+  text-align: center;
+  text-align-last: center;
+}
+
+.poem-bayt .line {
+  text-align-last: center;
+}
+
+.poem-bayt .shatr-1,
+.poem-bayt .shatr-2 {
+  display: inline-block;
+  margin: 0 1.2em;
+}
+
+.col {
+  display: inline-block;
+  margin: 0 0.8em;
+}
+
+.page-footnotes {
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.page-footnotes .footnote + .footnote {
+  margin-top: 8px;
+}
+
+.page-footnotes::before {
+  content: "";
+  display: block;
+  width: 30%;
+  margin: 0 0 6px auto;
+  border-top: 1px solid currentColor;
+}
+
+/* Heavy/technical footnotes (added by the book-pane viewer around long .footnote blocks,
+   e.g. tuhfat-interactive/js/book-view.js) are collapsed by default so a child reader isn't
+   confronted with dense scholarly text; a reader/researcher can still open them on demand. */
+.footnote-details {
+  margin-top: 4px;
+}
+
+.footnote-details > summary {
+  cursor: pointer;
+  font-weight: 700;
+  color: #8a5a1d;
+  list-style: revert;
+}
+
+.footnote-details[open] > summary {
+  margin-bottom: 4px;
+}
+
+.sanad-block {
+  border-inline-start: 0;
+}
+
+.uncertain {
+  background: color-mix(in srgb, #b5651d 25%, transparent);
+  border-bottom: 1px dashed #b5651d;
+}
+
+.illegible {
+  color: #b23a3a;
+}
+
+[data-blank="true"] .page-body::after {
+  content: "صفحة فارغة / بلا نص";
+  display: block;
+  text-align: center;
+  opacity: .6;
+}
 
 /* measuring mode (set by the viewer to find the widest natural line) */
-.measure .line { display: inline-block; width: auto; text-align: start; text-align-last: start; }
-.measure .page-body { white-space: nowrap; }
+.measure .line {
+  display: inline-block;
+  width: auto;
+  text-align: start;
+  text-align-last: start;
+}
+
+.measure .page-body {
+  white-space: nowrap;
+}

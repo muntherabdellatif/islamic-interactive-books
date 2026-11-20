@@ -1,0 +1,403 @@
+/* Right pane: interactive cards — light parchment theme, readable UI font, Amiri only for
+   quoted/matn text. Each card still carries its own --card-color accent as a left border. */
+.chapter-hero {
+  border: 1px solid rgba(169, 120, 31, 0.35);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(169, 120, 31, 0.1), rgba(15, 106, 74, 0.08));
+  margin-bottom: 18px;
+}
+.chapter-hero h2 {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--ink);
+}
+.chapter-hero .range {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.card {
+  border: 1px solid rgba(169, 120, 31, 0.25);
+  border-radius: var(--radius);
+  background: var(--parchment-card);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-inline-start: 4px solid var(--card-color, var(--emerald));
+  box-shadow: 0 1px 3px rgba(36, 31, 24, 0.06);
+  transition: box-shadow 0.2s, transform 0.2s;
+  scroll-margin-top: 20px;
+}
+.card.selected {
+  box-shadow: 0 0 0 2px var(--card-color, var(--emerald)), 0 8px 20px rgba(36, 31, 24, 0.12);
+  transform: translateY(-1px);
+}
+
+.rule-card .rule-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rule-card .rule-simplified {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.rule-card .rule-original {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  border-right: 2px solid rgba(169, 120, 31, 0.35);
+  padding-right: 8px;
+  margin-bottom: 10px;
+}
+.letter-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.letter-chip {
+  font-family: var(--font-manuscript);
+  font-size: 1.15rem;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  border: 1.5px solid rgba(169, 120, 31, 0.4);
+}
+.mnemonic-box {
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: rgba(169, 120, 31, 0.08);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
+.mnemonic-box .phrase {
+  font-family: var(--font-manuscript);
+  font-size: 1.1rem;
+  color: var(--amber);
+  font-weight: 700;
+}
+
+.example-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid rgba(169, 120, 31, 0.2);
+  border-radius: 10px;
+  padding: 7px 10px;
+  margin-top: 6px;
+}
+.example-row .word {
+  font-family: var(--font-manuscript);
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+.example-row .citation {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+/* Full-ayah supplementary examples: the whole verse in context, not just the bare word,
+   with the specific phrase that demonstrates the rule distinguished inside it. */
+.example-row-full {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 10px 12px;
+}
+.example-row-full .play-btn { align-self: flex-end; order: -1; }
+.example-ayah-text {
+  font-family: var(--font-manuscript);
+  font-size: 1.25rem;
+  line-height: 2.1;
+  color: var(--ink);
+  text-align: center;
+}
+.example-ayah-text .rule-hl {
+  background: color-mix(in srgb, var(--card-color, var(--gold)) 28%, transparent);
+  color: var(--ink);
+  border-radius: 4px;
+  padding: 0 2px;
+  font-weight: 700;
+}
+.example-row-full .citation { flex: none; text-align: center; }
+.play-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--emerald), #0a4a34);
+  color: #fff;
+  display: grid; place-items: center;
+  font-size: 0.75rem;
+  flex: none;
+}
+.play-btn.playing { animation: pulse-play 0.9s infinite; }
+@keyframes pulse-play {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(15,106,74,0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(15,106,74,0); }
+}
+
+.definition-card .term {
+  font-weight: 800;
+  color: var(--amber);
+  margin-bottom: 4px;
+}
+
+.person-card { display: flex; gap: 10px; align-items: center; }
+.person-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--emerald));
+  display: grid; place-items: center; font-weight: 800; color: #fff; flex: none;
+}
+
+.doc-section-card .kind { font-size: 0.72rem; color: var(--text-muted); }
+
+/* Curated YouTube lesson (chapter- or rule-level): click-to-load thumbnail + an explicit
+   "open on YouTube" link, so nothing is fetched from YouTube until the reader opts in. */
+.video-embed-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+  border: 1px solid rgba(169, 120, 31, 0.3);
+}
+.video-embed-box .video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.85;
+}
+.video-embed-box .video-play-badge {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  color: #fff;
+  background: radial-gradient(circle, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 60%, transparent 75%);
+}
+.video-embed-box.video-embed-live {
+  cursor: default;
+  border: none;
+}
+.video-embed-box.video-embed-live iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.video-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.video-open-link {
+  color: var(--emerald);
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.video-open-link:hover { text-decoration: underline; }
+
+.bayt-commentary-card { --card-color: var(--gold); }
+.bayt-commentary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.bayt-commentary-head .show-in-book-btn {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+}
+.bayt-commentary-text {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+/* Tab bar — one tab per leaf rule in the current chapter, plus نظرة عامة ومخارج الحروف. */
+.panel-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(169, 120, 31, 0.25);
+}
+.panel-tab {
+  background: #fff;
+  border: 1.5px solid color-mix(in srgb, var(--tab-color, var(--gold)) 45%, transparent);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 16px;
+  white-space: nowrap;
+}
+.panel-tab:hover { border-color: var(--tab-color, var(--gold)); }
+.panel-tab.active {
+  background: color-mix(in srgb, var(--tab-color, var(--gold)) 20%, #fff);
+  border-color: var(--tab-color, var(--gold));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tab-color, var(--gold)) 40%, transparent);
+}
+
+.panel-subsection-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--amber);
+  margin: 16px 0 6px;
+}
+
+.rule-detail .rule-title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rule-detail .rule-simplified {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.rule-card-actions-btn, .show-in-book-btn {
+  background: rgba(169, 120, 31, 0.1);
+  border: 1px solid rgba(169, 120, 31, 0.45);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 14px;
+}
+.rule-card-actions-btn:hover, .show-in-book-btn:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+
+.matn-quote-box {
+  font-family: var(--font-manuscript);
+  font-size: 1.1rem;
+  color: var(--ink);
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  border-right: 3px solid var(--card-color, var(--gold));
+}
+
+.no-examples-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Overview tab: rule tree + letter picker. */
+.rule-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rule-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid rgba(169, 120, 31, 0.3);
+  border-inline-start: 4px solid var(--card-color, var(--emerald));
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: var(--ink);
+  font-size: 0.9rem;
+  text-align: start;
+}
+.rule-tree-item:hover { border-color: var(--gold); }
+
+.letter-picker { margin-top: 18px; }
+.letter-picker-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.letter-chip-pick { cursor: pointer; }
+.letter-chip-pick:hover { background: #f3e9d2; }
+
+.goal-banner {
+  border: 1px dashed rgba(169, 120, 31, 0.5);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  background: var(--parchment-card);
+}
+
+/* Book intro (chapters 1/10 and non-chapter pages): entices the reader onward. */
+.intro-card {
+  background: var(--parchment-card);
+  border: 1px solid rgba(169, 120, 31, 0.3);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.chapter-map {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.chapter-map-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid rgba(169, 120, 31, 0.25);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--ink);
+  font-size: 0.88rem;
+  text-align: start;
+}
+.chapter-map-item:hover { border-color: var(--gold); }
+.chapter-map-item .cm-order {
+  flex: none;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--emerald);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: grid; place-items: center;
+}
+.secret-fact-card {
+  background: #fff8e8;
+  border: 1px dashed var(--gold);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.secret-fact-card .reveal { display: none; margin-top: 6px; color: var(--text-muted); }
+.secret-fact-card.open .reveal { display: block; }
