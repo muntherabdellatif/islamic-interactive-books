@@ -71,10 +71,27 @@ const PanelView = (() => {
     wireInteractions();
   }
 
+  // Picking a rule (from its tab, or from the letter picker) also moves the BOOK pane to
+  // the page where that rule's own bayt is actually printed, so the two panes always show
+  // related content together — not just on an explicit "بيّن في الكتاب" click. Only jumps
+  // when the current page doesn't already carry that bayt (e.g. browsing the clean-copy
+  // pages 12-15), so it never fights a reader who is already on the right page.
+  // Sets state.chapter explicitly (rather than going through the shared App.goToPage, whose
+  // PanelView.render() re-derives "which chapter owns this page" from the page's first
+  // printed bayt) because some pages carry the tail of one chapter and the head of the next
+  // (e.g. page 6: lam al-fil's closing bayt, then the mathalayn/madd chapters begin) — letting
+  // that auto-detection run here would silently flip the panel to the OTHER chapter's overview.
   function selectRule(ruleId) {
+    const rule = Data.get(ruleId);
+    const chapter = rule && Data.chapterOf(rule);
+    const page = rule && Data.firstAnnotatedPage(rule);
     state.tab = "rule";
     state.ruleId = ruleId;
+    if (chapter) state.chapter = chapter;
     renderChapterPanel();
+    if (page && App.currentPage() !== page) {
+      App.goToBookPage(page).then(() => Sync.select(ruleId));
+    }
   }
 
   function openMakhraj(regionIds) {

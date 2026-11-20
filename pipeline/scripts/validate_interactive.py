@@ -104,17 +104,21 @@ def check(entities, interactive):
     if bad_zone_values:
         errors.append(f"letter_zones points to unknown region id(s): {sorted(bad_zone_values)}")
 
-    # 7. chapter_videos / rule_videos must point at real chapters/rules and carry a youtube_id.
-    for chapter_id, video in interactive.get("chapter_videos", {}).items():
-        if chapter_id not in chapters:
-            errors.append(f"chapter_videos references unknown chapter id: {chapter_id}")
-        if not video.get("youtube_id", "").strip():
-            errors.append(f"chapter_videos[{chapter_id}] is missing youtube_id")
-    for rule_id, video in interactive.get("rule_videos", {}).items():
-        if rule_id not in rules:
-            errors.append(f"rule_videos references unknown rule id: {rule_id}")
-        if not video.get("youtube_id", "").strip():
-            errors.append(f"rule_videos[{rule_id}] is missing youtube_id")
+    # 7. chapter_videos / rule_videos must point at real chapters/rules; each entry is a
+    #    non-empty list of videos, each carrying a youtube_id.
+    def _check_videos(mapping, valid_ids, label):
+        for key, videos in mapping.items():
+            if key not in valid_ids:
+                errors.append(f"{label} references unknown id: {key}")
+            if not isinstance(videos, list) or not videos:
+                errors.append(f"{label}[{key}] must be a non-empty list")
+                continue
+            for i, video in enumerate(videos):
+                if not video.get("youtube_id", "").strip():
+                    errors.append(f"{label}[{key}][{i}] is missing youtube_id")
+
+    _check_videos(interactive.get("chapter_videos", {}), chapters, "chapter_videos")
+    _check_videos(interactive.get("rule_videos", {}), rules, "rule_videos")
 
     return errors
 

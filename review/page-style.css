@@ -66,10 +66,19 @@ in a RTL grid column 1 is the RIGHT edge. */ .manuscript-page {
   padding-inline-start: 1.6em;
 }
 
-/* The closing line of a paragraph is short and starts at the right edge. */
+/* The closing line of a paragraph is short and starts at the right edge. This DOM-position
+   rule catches the block's own true last line; book-view.js's markShortLines() catches the
+   more general case (a short line anywhere, e.g. a footnote's first point ending mid-block
+   before a new one starts on the next line) by measuring actual rendered width instead, via
+   .short-line below — the two overlap on a true last line and agree, which is fine. */
 .book-paragraph:not([data-continues="true"])>.line:last-child,
 .sanad-block:not([data-continues="true"])>.line:last-child,
 .footnote:not([data-continues="true"])>.line:last-child {
+  text-align-last: start;
+}
+
+.line.short-line {
+  text-align: start;
   text-align-last: start;
 }
 
@@ -94,14 +103,62 @@ in a RTL grid column 1 is the RIGHT edge. */ .manuscript-page {
   text-align-last: center;
 }
 
+/* Every bayt line uses the SAME four fixed columns (number badge, shatr 1, a flexible
+   spacer, shatr 2) via CSS Grid, so shatr 1 always starts/ends at the same x-position
+   across every single bayt on the page, and likewise for shatr 2 — not just "centred with
+   a small gap" and not just "pulled to two edges" with a floating boundary that moves with
+   each line's own text length. The shatr-1/shatr-2 column widths (--shatr1-col/--shatr2-col)
+   are set per page by book-view.js's alignBaytColumns() to that PAGE's own longest shatr 1
+   and longest shatr 2 — not an arbitrary half the line width — so only that one longest
+   line needs zero stretch and every other line needs only as much justification as its own
+   shortfall against it, instead of being stretched across half the full page width (which
+   dumped all the extra space into one or two ugly, oversized word-gaps). The spacer column
+   (1fr) absorbs whatever width is left over after both fixed columns, so it — not the text
+   inside either shatr — is what grows or shrinks with page width. The verse-number badge is
+   wrapped by the viewer's JS (book-view.js, never touching the stage-1 HTML itself) from
+   the plain "٦) " text that precedes shatr 1 in the source. */
 .poem-bayt .line {
-  text-align-last: center;
+  display: grid;
+  grid-template-columns: 2.4em var(--shatr1-col, 1fr) 1fr var(--shatr2-col, 1fr);
+  column-gap: 0.5em;
+  align-items: baseline;
+}
+
+.poem-bayt .bayt-number {
+  grid-column: 1;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5em;
+  height: 1.5em;
+  padding: 0 0.3em;
+  border-radius: 999px;
+  background: color-mix(in srgb, #8a5a1d 16%, transparent);
+  color: #8a5a1d;
+  font-size: 0.62em;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .poem-bayt .shatr-1,
 .poem-bayt .shatr-2 {
-  display: inline-block;
-  margin: 0 1.2em;
+  min-width: 0;
+  text-align: justify;
+  text-align-last: justify;
+}
+
+.poem-bayt .shatr-1 { grid-column: 2; }
+.poem-bayt .shatr-2 { grid-column: 4; } /* column 3 is the flexible spacer; nothing is placed in it */
+
+/* A footnote-reference number embedded mid-verse (e.g. "أَرْبَعُ(٢) أَحْكَامٍ") printed at
+   full verse size reads as an oversized, unrelated digit; shown as a light superscript
+   instead, it reads as what it is — a reference mark, not part of the word. */
+.poem-bayt .footnote-ref {
+  font-size: 0.56em;
+  font-weight: 700;
+  color: #8a5a1d;
+  vertical-align: super;
 }
 
 .col {

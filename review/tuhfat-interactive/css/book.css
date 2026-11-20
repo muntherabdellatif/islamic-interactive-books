@@ -33,7 +33,7 @@
   border: 1px solid var(--parchment-border);
   border-radius: 6px;
   padding: 22px 30px;
-  max-width: 640px;
+  max-width: 750px;
   margin: 0 auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   transform-origin: right center;

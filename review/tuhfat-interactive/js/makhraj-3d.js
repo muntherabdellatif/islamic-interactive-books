@@ -54,6 +54,14 @@ const Makhraj3D = (() => {
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     const target = new THREE.Vector3(0, -0.27, 0);
     let radius = 4.6, theta = 0, phi = 1.3; // spherical orbit around `target`
+    // The model is a thin extruded sagittal slice (a side-profile silhouette, like any
+    // textbook speech-articulation diagram), not a solid volumetric head — so it reads
+    // clearly only within a window around the side view. Past roughly ±60°, it degenerates
+    // into its own bare edge (a flat sliver with no region visible), which a reader rotating
+    // out of curiosity could easily land on and then not know how to recover from. Clamping
+    // the horizontal orbit keeps every reachable angle still recognisable as a head.
+    const THETA_LIMIT = 1.05; // radians (~60°) either side of the default side view
+    let autoRotateDir = 1;
 
     let renderer;
     try {
@@ -116,7 +124,7 @@ const Makhraj3D = (() => {
       const p = pointerPos(ev);
       const dx = p.x - lastX, dy = p.y - lastY;
       if (Math.abs(dx) + Math.abs(dy) > 2) moved = true;
-      theta -= dx * 0.01;
+      theta = Math.min(THETA_LIMIT, Math.max(-THETA_LIMIT, theta - dx * 0.01));
       phi = Math.min(2.4, Math.max(0.5, phi - dy * 0.01));
       lastX = p.x; lastY = p.y;
       lastInteraction = clock.getElapsedTime();
@@ -157,7 +165,12 @@ const Makhraj3D = (() => {
     function animate() {
       raf = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
-      if (!dragging && t - lastInteraction > 3) theta += 0.0025; // gentle idle auto-rotate
+      if (!dragging && t - lastInteraction > 3) {
+        // Gentle idle auto-rotate, ping-ponging within the same clamped window as manual drag.
+        theta += autoRotateDir * 0.0025;
+        if (theta > THETA_LIMIT) { theta = THETA_LIMIT; autoRotateDir = -1; }
+        if (theta < -THETA_LIMIT) { theta = -THETA_LIMIT; autoRotateDir = 1; }
+      }
       camera.position.set(
         target.x + radius * Math.sin(phi) * Math.sin(theta),
         target.y + radius * Math.cos(phi),

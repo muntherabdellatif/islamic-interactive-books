@@ -163,8 +163,15 @@
 
 .doc-section-card .kind { font-size: 0.72rem; color: var(--text-muted); }
 
-/* Curated YouTube lesson (chapter- or rule-level): click-to-load thumbnail + an explicit
+/* Curated YouTube lesson(s) (chapter- or rule-level): click-to-load thumbnail + an explicit
    "open on YouTube" link, so nothing is fetched from YouTube until the reader opts in. */
+.video-card + .video-card { margin-top: 14px; }
+.video-note {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
 .video-embed-box {
   position: relative;
   width: 100%;

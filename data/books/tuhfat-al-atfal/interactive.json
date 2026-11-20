@@ -1887,177 +1887,252 @@
     "bayt.057": "ويجمع جميعَ الحروف المقطّعة الواردة في أوائل السور كلها (وعددها أربعة عشر حرفاً) عبارةُ «صِلْهُ سُحَيْرًا مَنْ قَطَعْكَ»، وقد اشتهرت هذه العبارة عند أهل التجويد لحفظها (حاشية الصفحة ٩: «قَطَعْكَ» أصلها «قَطَعَكَ» بفتح العين، سُكّنت لضرورة الوزن، و«سُحَيْرًا» بتنوين النون آخرها رغم ذكر النون في «مَنْ قطعك»، وهذا تكرار لضرورة الوزن)."
   },
   "chapter_videos": {
-    "chapter.muqaddimah": {
-      "youtube_id": "wj7gsXl-pQo",
-      "title_ar": "شرح مقدمة تحفة الاطفال",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.nun-sakinah-tanwin": {
-      "youtube_id": "DiLajL_epfA",
-      "title_ar": "احكام النون الساكنة والتنوين",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.nun-mim-mushaddadatayn": {
-      "youtube_id": "2mh9rORGPqM",
-      "title_ar": "حكم النون والميم المشددتين",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.mim-sakinah": {
-      "youtube_id": "5UrTrFb6bmU",
-      "title_ar": "تهجي أحكام الميم الساكنة",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.lam-al-lam-fil": {
-      "youtube_id": "K_YpuIgZGlY",
-      "title_ar": "أحكام اللامات السواكن",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.mathalayn-mutaqaribayn-mutajanisayn": {
-      "youtube_id": "3gsVWAImyWY",
-      "title_ar": "أنواع الإدغام",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.aqsam-al-madd": {
-      "youtube_id": "WYwQbc2zoV4",
-      "title_ar": "مقدمة عن المد",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.ahkam-al-madd": {
-      "youtube_id": "JDjdG7HFMZg",
-      "title_ar": "أحكام المد",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.aqsam-al-madd-al-lazim": {
-      "youtube_id": "plJatsHgCYQ",
-      "title_ar": "أحكام المد اللازم",
-      "channel_ar": "د. جمال القرش"
-    },
-    "chapter.khatimah": {
-      "youtube_id": "D1-_PdjwbkM",
-      "title_ar": "ختام التحفة",
-      "channel_ar": "د. جمال القرش"
-    }
+    "chapter.muqaddimah": [
+      {
+        "youtube_id": "wj7gsXl-pQo",
+        "title_ar": "شرح مقدمة تحفة الاطفال",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.nun-sakinah-tanwin": [
+      {
+        "youtube_id": "DiLajL_epfA",
+        "title_ar": "احكام النون الساكنة والتنوين",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.nun-mim-mushaddadatayn": [
+      {
+        "youtube_id": "QhfCy7Jgj2w",
+        "title_ar": "أحكام الميم والنون المشددتين واللحن الجلي فيهما شرح تحفة الأطفال",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "chapter.mim-sakinah": [
+      {
+        "youtube_id": "5UrTrFb6bmU",
+        "title_ar": "تهجي أحكام الميم الساكنة",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.lam-al-lam-fil": [
+      {
+        "youtube_id": "K_YpuIgZGlY",
+        "title_ar": "أحكام اللامات السواكن",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.mathalayn-mutaqaribayn-mutajanisayn": [
+      {
+        "youtube_id": "3gsVWAImyWY",
+        "title_ar": "أنواع الإدغام",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.aqsam-al-madd": [
+      {
+        "youtube_id": "WYwQbc2zoV4",
+        "title_ar": "مقدمة عن المد",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.ahkam-al-madd": [
+      {
+        "youtube_id": "JDjdG7HFMZg",
+        "title_ar": "أحكام المد",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.aqsam-al-madd-al-lazim": [
+      {
+        "youtube_id": "plJatsHgCYQ",
+        "title_ar": "أحكام المد اللازم",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "chapter.khatimah": [
+      {
+        "youtube_id": "D1-_PdjwbkM",
+        "title_ar": "ختام التحفة",
+        "channel_ar": "د. جمال القرش"
+      }
+    ]
   },
   "rule_videos": {
-    "rule.nun-sakinah-tanwin.idhar-halqi": {
-      "youtube_id": "K228p6CDPTw",
-      "title_ar": "الإظهار الحلقي",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.nun-sakinah-tanwin.idgham-bighunnah": {
-      "youtube_id": "AV4fDdVTnPU",
-      "title_ar": "حكم الإدغام",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.nun-sakinah-tanwin.idgham-bilaghunnah": {
-      "youtube_id": "AV4fDdVTnPU",
-      "title_ar": "حكم الإدغام",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.nun-sakinah-tanwin.iqlab": {
-      "youtube_id": "T9oZ08A9Hr8",
-      "title_ar": "الإقلاب",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.nun-sakinah-tanwin.ikhfa": {
-      "youtube_id": "9mh-V637lXE",
-      "title_ar": "الإخفاء الحقيقي",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.nun-mim-mushaddadatayn.ghunnah": {
-      "youtube_id": "2mh9rORGPqM",
-      "title_ar": "حكم النون والميم المشددتين",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.mim-sakinah.ikhfa-shafawi": {
-      "youtube_id": "5UrTrFb6bmU",
-      "title_ar": "تهجي أحكام الميم الساكنة",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.mim-sakinah.idgham-shafawi": {
-      "youtube_id": "5UrTrFb6bmU",
-      "title_ar": "تهجي أحكام الميم الساكنة",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.mim-sakinah.idhar-shafawi": {
-      "youtube_id": "5UrTrFb6bmU",
-      "title_ar": "تهجي أحكام الميم الساكنة",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.lam-al.qamariyyah": {
-      "youtube_id": "K_YpuIgZGlY",
-      "title_ar": "أحكام اللامات السواكن",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.lam-al.shamsiyyah": {
-      "youtube_id": "K_YpuIgZGlY",
-      "title_ar": "أحكام اللامات السواكن",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.lam-fil.idhar": {
-      "youtube_id": "K_YpuIgZGlY",
-      "title_ar": "أحكام اللامات السواكن",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.tashabuh.mathalayn": {
-      "youtube_id": "de4LyYOOPHI",
-      "title_ar": "أنواع الإدغام (المتماثلين والمتجانسين)",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.tashabuh.mutajanisayn": {
-      "youtube_id": "de4LyYOOPHI",
-      "title_ar": "أنواع الإدغام (المتماثلين والمتجانسين)",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.tashabuh.mutaqaribayn": {
-      "youtube_id": "9Tk76MHmnRg",
-      "title_ar": "إدغام المتقاربين",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd.tabii": {
-      "youtube_id": "YD4rHNxM7yY",
-      "title_ar": "المد الأصلي",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd.wajib-muttasil": {
-      "youtube_id": "1Kp_Cc6iCfc",
-      "title_ar": "المد الفرعي",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd.jaiz-munfasil": {
-      "youtube_id": "1Kp_Cc6iCfc",
-      "title_ar": "المد الفرعي",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd.badal": {
-      "youtube_id": "1Kp_Cc6iCfc",
-      "title_ar": "المد الفرعي",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd.aarid-lis-sukoon": {
-      "youtube_id": "9-GXpwrDFFQ",
-      "title_ar": "المد العارض للسكون",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd-lazim.kalimi-mukhaffaf": {
-      "youtube_id": "plJatsHgCYQ",
-      "title_ar": "أحكام المد اللازم",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd-lazim.kalimi-muthaqqal": {
-      "youtube_id": "plJatsHgCYQ",
-      "title_ar": "أحكام المد اللازم",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd-lazim.harfi-mukhaffaf": {
-      "youtube_id": "iryehzrQw9k",
-      "title_ar": "أحكام المد الحرفي",
-      "channel_ar": "د. جمال القرش"
-    },
-    "rule.madd-lazim.harfi-muthaqqal": {
-      "youtube_id": "iryehzrQw9k",
-      "title_ar": "أحكام المد الحرفي",
-      "channel_ar": "د. جمال القرش"
-    }
+    "rule.nun-sakinah-tanwin.idhar-halqi": [
+      {
+        "youtube_id": "K228p6CDPTw",
+        "title_ar": "الإظهار الحلقي",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.nun-sakinah-tanwin.idgham-bighunnah": [
+      {
+        "youtube_id": "n5NFXXbLlA0",
+        "title_ar": "شرح الإدغام بغنة مع التطبيق العملي والتدريبات",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.nun-sakinah-tanwin.idgham-bilaghunnah": [
+      {
+        "youtube_id": "DrMXNH_4Dac",
+        "title_ar": "شرح الإدغام بغير غنة مع التطبيق العملي والتدريبات",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.nun-sakinah-tanwin.iqlab": [
+      {
+        "youtube_id": "dql3XhNBaZg",
+        "title_ar": "شرح حكم الإقلاب مع التطبيق العملي والتدريبات",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.nun-sakinah-tanwin.ikhfa": [
+      {
+        "youtube_id": "-gR15qzJ0Zg",
+        "title_ar": "الإخفاء الحقيقي مع القاف والحروف المفخمة وطريقة اخراج الغنة المفخمة",
+        "channel_ar": "فارس عنتر"
+      },
+      {
+        "youtube_id": "CRMDUsIxDtQ",
+        "title_ar": "شرح الإخفاء الحقيقي مع حرف الكاف والحروف المرققة وطريقة اخراج غنة الإخفاء",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.nun-mim-mushaddadatayn.ghunnah": [
+      {
+        "youtube_id": "QhfCy7Jgj2w",
+        "title_ar": "أحكام الميم والنون المشددتين واللحن الجلي فيهما شرح تحفة الأطفال",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.mim-sakinah.ikhfa-shafawi": [
+      {
+        "youtube_id": "NE2cc2NxO0E",
+        "title_ar": "شرح الإخفاء الشفوي كما يفعله إمام القراء الشيخ الحصري رحمه الله",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.mim-sakinah.idgham-shafawi": [
+      {
+        "youtube_id": "5UrTrFb6bmU",
+        "title_ar": "تهجي أحكام الميم الساكنة",
+        "channel_ar": "د. جمال القرش",
+        "note_ar": "هذا الفيديو يغطي أحكام الميم الساكنة الثلاثة معاً؛ تجاوز إلى الجزء الخاص بهذا الحكم تحديداً."
+      }
+    ],
+    "rule.mim-sakinah.idhar-shafawi": [
+      {
+        "youtube_id": "5UrTrFb6bmU",
+        "title_ar": "تهجي أحكام الميم الساكنة",
+        "channel_ar": "د. جمال القرش",
+        "note_ar": "هذا الفيديو يغطي أحكام الميم الساكنة الثلاثة معاً؛ تجاوز إلى الجزء الخاص بهذا الحكم تحديداً."
+      }
+    ],
+    "rule.lam-al.qamariyyah": [
+      {
+        "youtube_id": "G8YERqMEm_A",
+        "title_ar": "اللامات السواكن وأحوال لام التعريف: اللام القمرية",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.lam-al.shamsiyyah": [
+      {
+        "youtube_id": "zWCe6rs5imw",
+        "title_ar": "اللام الشمسية مع شرح تحفة الأطفال",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.lam-fil.idhar": [
+      {
+        "youtube_id": "EKptMJ8IQAU",
+        "title_ar": "لام الفعل المظهرة والمدغمة (قل نعم وقلنا) شرح اللامات السواكن وتحفة الأطفال",
+        "channel_ar": "فارس عنتر"
+      }
+    ],
+    "rule.tashabuh.mathalayn": [
+      {
+        "youtube_id": "de4LyYOOPHI",
+        "title_ar": "أنواع الإدغام (المتماثلين والمتجانسين)",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.tashabuh.mutajanisayn": [
+      {
+        "youtube_id": "de4LyYOOPHI",
+        "title_ar": "أنواع الإدغام (المتماثلين والمتجانسين)",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.tashabuh.mutaqaribayn": [
+      {
+        "youtube_id": "9Tk76MHmnRg",
+        "title_ar": "إدغام المتقاربين",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd.tabii": [
+      {
+        "youtube_id": "YD4rHNxM7yY",
+        "title_ar": "المد الأصلي",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd.wajib-muttasil": [
+      {
+        "youtube_id": "1Kp_Cc6iCfc",
+        "title_ar": "المد الفرعي",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd.jaiz-munfasil": [
+      {
+        "youtube_id": "1Kp_Cc6iCfc",
+        "title_ar": "المد الفرعي",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd.badal": [
+      {
+        "youtube_id": "1Kp_Cc6iCfc",
+        "title_ar": "المد الفرعي",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd.aarid-lis-sukoon": [
+      {
+        "youtube_id": "9-GXpwrDFFQ",
+        "title_ar": "المد العارض للسكون",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd-lazim.kalimi-mukhaffaf": [
+      {
+        "youtube_id": "plJatsHgCYQ",
+        "title_ar": "أحكام المد اللازم",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd-lazim.kalimi-muthaqqal": [
+      {
+        "youtube_id": "plJatsHgCYQ",
+        "title_ar": "أحكام المد اللازم",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd-lazim.harfi-mukhaffaf": [
+      {
+        "youtube_id": "iryehzrQw9k",
+        "title_ar": "أحكام المد الحرفي",
+        "channel_ar": "د. جمال القرش"
+      }
+    ],
+    "rule.madd-lazim.harfi-muthaqqal": [
+      {
+        "youtube_id": "iryehzrQw9k",
+        "title_ar": "أحكام المد الحرفي",
+        "channel_ar": "د. جمال القرش"
+      }
+    ]
   }
 }

@@ -105,14 +105,15 @@ const Data = (() => {
     return (interactiveLayer.bayt_commentary || {})[baytId] || "";
   }
 
-  // Curated YouTube lesson for a whole chapter (shown in its overview tab) or for one
-  // leaf rule specifically (shown in that rule's own tab) — both optional, from a vetted
-  // real channel teaching this exact book, never auto-matched or invented.
-  function chapterVideo(chapterId) {
-    return (interactiveLayer.chapter_videos || {})[chapterId] || null;
+  // Curated YouTube lesson(s) for a whole chapter (shown in its overview tab) or for one
+  // leaf rule specifically (shown in that rule's own tab) — each a list (sometimes a rule
+  // needs two real videos, e.g. ikhfa's heavy- vs light-letter halves), from vetted real
+  // channels teaching this exact book/subject, never auto-matched or invented.
+  function chapterVideos(chapterId) {
+    return (interactiveLayer.chapter_videos || {})[chapterId] || [];
   }
-  function ruleVideo(ruleId) {
-    return (interactiveLayer.rule_videos || {})[ruleId] || null;
+  function ruleVideos(ruleId) {
+    return (interactiveLayer.rule_videos || {})[ruleId] || [];
   }
 
   // If a chapter's leaf rules' letter_sets exactly partition the 28-letter alphabet
@@ -179,7 +180,7 @@ const Data = (() => {
   return {
     load, get, onPage, relatedOfType, allOfType, chapterForPage, chapterOf,
     isLeafRule, leafRulesOfChapter, letterPartitionForChapter, baytsOfChapter, baytCommentary,
-    chapterVideo, ruleVideo,
+    chapterVideos, ruleVideos,
     ruleCard, audioFor, quizFor, categoryColor, makhrajRegions, firstAnnotatedPage, lettersForRegion, khayshumLetters,
   };
 })();

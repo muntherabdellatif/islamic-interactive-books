@@ -81,7 +81,7 @@ const CardBuilders = (() => {
 
   function overviewTab(chapter, leafRules) {
     const quiz = Data.quizFor(chapter.id);
-    const chapterVideoHtml = videoSection(Data.chapterVideo(chapter.id));
+    const chapterVideoHtml = videoSection(Data.chapterVideos(chapter.id));
     if (!leafRules.length) {
       // Chapters 1 (المقدمة) and 10 (الخاتمة) carry no tajweed rules of their own —
       // show the book's table of contents and its two "secret" numeric facts instead
@@ -149,14 +149,12 @@ const CardBuilders = (() => {
     </div>`;
   }
 
-  // One curated YouTube lesson (chapter- or rule-level). Shown as a click-to-load thumbnail
-  // (no iframe fetched until the reader actually wants to watch) + a direct "open on YouTube"
-  // link, so the video can be watched either inline on this page or on youtube.com itself.
-  function videoSection(video, titleHint) {
-    if (!video || !video.youtube_id) return "";
+  // One curated YouTube lesson's card: a click-to-load thumbnail (no iframe fetched until the
+  // reader actually wants to watch) + a direct "open on YouTube" link, so it can be watched
+  // either inline on this page or on youtube.com itself.
+  function videoCard(video) {
     const id = esc(video.youtube_id);
-    return `<div class="panel-section video-section">
-      <div class="panel-section-title">🎬 فيديو شرح${titleHint ? `: ${esc(titleHint)}` : ""}</div>
+    return `<div class="video-card">
       <div class="video-embed-box" data-video-embed="${id}">
         <img class="video-thumb" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="صورة مصغرة لفيديو الشرح" loading="lazy">
         <span class="video-play-badge">▶</span>
@@ -165,6 +163,18 @@ const CardBuilders = (() => {
         <span class="video-source">${esc(video.title_ar || "")}${video.channel_ar ? ` — ${esc(video.channel_ar)}` : ""}</span>
         <a class="video-open-link" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener noreferrer">↗ فتح في يوتيوب</a>
       </div>
+      ${video.note_ar ? `<p class="video-note">${esc(video.note_ar)}</p>` : ""}
+    </div>`;
+  }
+
+  // One or more curated videos for a chapter or a single rule. A rule can legitimately have
+  // two (e.g. ikhfa's heavy- vs light-letter halves) — each gets its own card, never merged
+  // into one misleading thumbnail.
+  function videoSection(videos) {
+    if (!videos || !videos.length) return "";
+    return `<div class="panel-section video-section">
+      <div class="panel-section-title">🎬 فيديو شرح${videos.length > 1 ? ` (${videos.length})` : ""}</div>
+      ${videos.map(videoCard).join("")}
     </div>`;
   }
 
@@ -247,7 +257,7 @@ const CardBuilders = (() => {
       <div class="rule-title">${ruleIcon(rule)} ${esc(rule.label_ar)}</div>
       <div class="rule-simplified">${esc(interactive.simplified_ar || "")}</div>
 
-      ${videoSection(Data.ruleVideo(rule.id))}
+      ${videoSection(Data.ruleVideos(rule.id))}
 
       ${letters.length ? `<div class="panel-subsection-title">متى يُطبَّق؟</div>${letterChips(letters)}` : ""}
 
