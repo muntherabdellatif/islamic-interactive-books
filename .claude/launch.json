@@ -2,13 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "repo-static-server",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8743"],
-      "port": 8743
-    },
-    {
-      "name": "islamic-books-app",
+      "name": "app-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "app"],
       "port": 5173

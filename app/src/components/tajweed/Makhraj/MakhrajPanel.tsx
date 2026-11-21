@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { TajweedDataset } from "../../../services/tajweedDataService";
 import { HALQ_DETAIL_ZONES, HALQ_SUBS } from "../../../constants/makhrajZones";
 import { dataRegionsToUiZones, visibleZones } from "../../../utils/makhrajZoneHelpers";
-import { Makhraj3DView } from "./Makhraj3DView";
+import { MakhrajDiagram } from "./MakhrajDiagram";
 import { MakhrajZoneRow } from "./MakhrajZoneRow";
 import { MakhrajZoneDetail } from "./MakhrajZoneDetail";
 
@@ -40,11 +40,8 @@ export function MakhrajPanel({ dataset, focusRegions }: MakhrajPanelProps) {
   return (
     <div className="panel-section">
       <div className="panel-section-title">🗺️ خريطة مخارج الحروف</div>
-      <p className="mk-hint">
-        دوِّر المجسّم بإصبعك أو بالماوس لترى الرأس والرقبة من كل جانب، أو اضغط على منطقة (في المجسّم أو في القائمة)
-        لترى حروفها.
-      </p>
-      <Makhraj3DView zones={zones} selectedZoneId={selectedZoneId} onSelectZone={setSelectedZoneId} />
+      <p className="mk-hint">اضغط على منطقة في الرسم، أو في القائمة أدناه، لترى حروفها.</p>
+      <MakhrajDiagram zones={zones} selectedZoneId={selectedZoneId} onSelectZone={setSelectedZoneId} />
       <button type="button" className="mk-detail-toggle" onClick={handleToggleDetailed}>
         {detailed ? "👶 عرض مبسّط (5 مناطق)" : "🔬 عرض علمي تفصيلي (أقصى/وسط/أدنى الحلق)"}
       </button>

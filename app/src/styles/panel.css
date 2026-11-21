@@ -108,8 +108,9 @@
   flex: 1;
 }
 
-/* Full-ayah supplementary examples: the whole verse in context, not just the bare word,
-   with the specific phrase that demonstrates the rule distinguished inside it. */
+/* Full-ayah supplementary examples: a few words of context around the shahid (evidence
+   word) by default — not the whole verse, which buries a one-word rule inside a long
+   ayah — with a toggle to expand to the full verse, every occurrence highlighted. */
 .example-row-full {
   flex-direction: column;
   align-items: stretch;
@@ -130,6 +131,17 @@
   border-radius: 4px;
   padding: 0 2px;
   font-weight: 700;
+}
+.ayah-expand-toggle {
+  display: block;
+  margin: 4px auto 0;
+  background: none;
+  border: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--emerald);
+  text-decoration: underline;
+  cursor: pointer;
 }
 .example-row-full .citation { flex: none; text-align: center; }
 .play-btn {

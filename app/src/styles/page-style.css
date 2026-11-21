@@ -151,6 +151,26 @@ in a RTL grid column 1 is the RIGHT edge. */ .manuscript-page {
 .poem-bayt .shatr-1 { grid-column: 2; }
 .poem-bayt .shatr-2 { grid-column: 4; } /* column 3 is the flexible spacer; nothing is placed in it */
 
+/* Stacked fallback (set by bookPageDom.ts's fitFont when the container is too narrow
+   to fit both shatrs on one row at a readable font size): shatr-2 moves to its own
+   row under shatr-1 instead of forcing the font down past legibility or overflowing. */
+.manuscript-page.stack-bayt .poem-bayt .line {
+  grid-template-columns: 2.4em 1fr;
+  grid-template-rows: auto auto;
+  row-gap: 2px;
+}
+.manuscript-page.stack-bayt .poem-bayt .bayt-number {
+  grid-row: 1 / 3;
+}
+.manuscript-page.stack-bayt .poem-bayt .shatr-1,
+.manuscript-page.stack-bayt .poem-bayt .shatr-2 {
+  grid-column: 2;
+  text-align: start;
+  text-align-last: start;
+}
+.manuscript-page.stack-bayt .poem-bayt .shatr-1 { grid-row: 1; }
+.manuscript-page.stack-bayt .poem-bayt .shatr-2 { grid-row: 2; padding-inline-start: 1em; }
+
 /* A footnote-reference number embedded mid-verse (e.g. "أَرْبَعُ(٢) أَحْكَامٍ") printed at
    full verse size reads as an oversized, unrelated digit; shown as a light superscript
    instead, it reads as what it is — a reference mark, not part of the word. */

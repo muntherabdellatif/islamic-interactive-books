@@ -13,8 +13,8 @@ export const BOOK_TYPES: readonly BookTypeInfo[] = [
   },
   {
     id: "fiqh",
-    titleAr: "كتب الفقه المقارن والمذاهب",
-    interactiveIdeaAr: "شجرة قرارات فقهية تفاعلية تتفرع بحسب المسألة مع الأدلة والمذاهب.",
+    titleAr: "كتب الفقه والمتون المذهبية",
+    interactiveIdeaAr: "شجرة قرارات فقهية تفاعلية تتفرع بحسب المسألة مع أدلة المذهب المعتمد في المتن.",
   },
   {
     id: "aqeedah",
@@ -31,13 +31,13 @@ export const LEARNING_PATHS: readonly LearningPath[] = [
   },
   {
     id: "hadith-transmission",
-    titleAr: "مسار علوم الحديث والأسانيد",
-    descriptionAr: "تتبع سلاسل الرواة وطرق التحمل والأداء عبر الطبقات.",
+    titleAr: "مسار أسانيد القراءات",
+    descriptionAr: "تتبع أسانيد القراءات العشر وطرق روايتها عبر الطبقات حتى النبي ﷺ.",
   },
   {
     id: "comparative-fiqh",
-    titleAr: "مسار الفقه المقارن",
-    descriptionAr: "مقارنة أحكام المذاهب الأربعة مسألة بمسألة.",
+    titleAr: "مسار الفقه الشافعي",
+    descriptionAr: "دراسة أحكام الفقه الشافعي مسألة بمسألة من متن أبي شجاع.",
   },
   {
     id: "aqeedah-foundations",

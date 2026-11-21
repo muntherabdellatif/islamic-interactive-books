@@ -10,9 +10,11 @@ export function useFitFont(containerRef: RefObject<HTMLElement | null>, dependen
     refitBookPage(container);
     void document.fonts.ready.then(() => refitBookPage(container));
 
-    const handleResize = (): void => refitBookPage(container);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    // ResizeObserver, not a window "resize" listener: the pane's own width can change
+    // (split-ratio drag, device rotation) without the window itself resizing.
+    const observer = new ResizeObserver(() => refitBookPage(container));
+    observer.observe(container);
+    return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dependencyKey]);
 }

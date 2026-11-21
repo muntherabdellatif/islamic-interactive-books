@@ -31,14 +31,3 @@ export function findZone(zoneId: string): MakhrajZone | undefined {
   return UI_ZONES.find((zone) => zone.id === zoneId) ?? HALQ_DETAIL_ZONES.find((zone) => zone.id === zoneId);
 }
 
-function hexToNumber(color: string): number {
-  return parseInt(color.replace("#", ""), 16);
-}
-
-export function colorMapFor(zones: readonly MakhrajZone[]): Record<string, number> {
-  const map: Record<string, number> = {};
-  zones.forEach((zone) => {
-    map[zone.id] = hexToNumber(zone.color);
-  });
-  return map;
-}

@@ -1,17 +1,102 @@
 /* The "مخارج الحروف" tab — big, friendly, colorful zones for children on a light background. */
-/* The 3D head/neck mount (see makhraj-3d.js) is the main visual now; the zone row below it
+/* The sagittal diagram (MakhrajDiagram.tsx) is the main visual now; the zone row below it
    is a slim legend/selector, not the primary content, so it no longer needs giant cards. */
-.mk-3d-mount {
+.mk-diagram {
   width: 100%;
-  height: 260px;
+  max-height: 340px;
   border-radius: var(--radius);
-  background: radial-gradient(ellipse at center, #fffef9 0%, #f3ecd9 100%);
+  background: #fbf8ee;
   border: 1px solid var(--parchment-border);
   margin-bottom: 10px;
-  touch-action: none;
-  cursor: grab;
 }
-.mk-3d-mount:active { cursor: grabbing; }
+.mk-leader {
+  stroke: #b8935f;
+  stroke-width: 3;
+  stroke-dasharray: 10 14;
+  opacity: 0.55;
+}
+/* The illustration's own colors are in the image; a region's hit-area stays almost
+   invisible until hovered/selected, when a matching-colored glow outlines it. */
+.mk-region {
+  fill: color-mix(in srgb, var(--zone-color) 10%, transparent);
+  stroke: transparent;
+  stroke-width: 5;
+  cursor: pointer;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.mk-region:hover {
+  fill: color-mix(in srgb, var(--zone-color) 22%, transparent);
+  stroke: color-mix(in srgb, var(--zone-color) 55%, transparent);
+}
+.mk-region:focus-visible { outline: 3px solid var(--zone-color); outline-offset: 2px; }
+.mk-region.selected {
+  fill: color-mix(in srgb, var(--zone-color) 30%, transparent);
+  stroke: var(--zone-color);
+  animation: mk-region-pulse 1.4s ease-in-out infinite;
+}
+@keyframes mk-region-pulse {
+  0%, 100% { stroke-width: 5; }
+  50% { stroke-width: 9; }
+}
+
+/* Callout labels: real HTML buttons inside a <foreignObject>, styled to match the
+   app's other pill buttons (.mk-zone) instead of bare SVG rect+text. The foreignObject
+   lives in the diagram's large 2000x1091 image coordinate space (not CSS pixels), so
+   every size below is ~4.2x a normal pill button's — that factor is the ratio between
+   this viewBox and the box it's rendered into, and keeps the button a normal-looking
+   size on screen once the browser scales the whole SVG down to fit its container. */
+.mk-diagram-label-btn {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  padding: 0 42px;
+  border-radius: 999px;
+  cursor: pointer;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--zone-color) 16%, #fff), #fff);
+  border: 6px solid color-mix(in srgb, var(--zone-color) 45%, transparent);
+  box-shadow: 0 4px 13px rgba(60, 40, 10, 0.14);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+.mk-diagram-label-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 13px 34px rgba(60, 40, 10, 0.18);
+}
+.mk-diagram-label-btn:focus-visible {
+  outline: 8px solid var(--zone-color);
+  outline-offset: 8px;
+}
+.mk-diagram-label-btn.selected {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--zone-color) 40%, #fff),
+    color-mix(in srgb, var(--zone-color) 16%, #fff)
+  );
+  border-color: var(--zone-color);
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--zone-color) 30%, transparent);
+}
+.mk-diagram-label-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--zone-color) 32%, #fff);
+  font-size: 50px;
+  flex: none;
+}
+.mk-diagram-label-text {
+  font-size: 52px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .mk-detail-toggle {
   display: inline-flex;

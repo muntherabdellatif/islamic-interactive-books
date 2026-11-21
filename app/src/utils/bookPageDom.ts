@@ -6,7 +6,13 @@ import { DEFAULT_CARD_COLOR } from "../constants/ui";
 const HEAVY_FOOTNOTE_LINE_THRESHOLD = 3;
 const SHORT_LINE_RATIO = 0.92;
 const MAX_FONT_PX = 24;
+const MIN_FONT_PX = 15;
 const BASE_FONT_PX = 20;
+/* A bayt row's grid (see page-style.css) reserves 2.4em for the number badge plus
+   3 × 0.5em of column-gap around its tracks — fixed overhead on top of the two
+   shatr widths, needed whether the row is laid out side-by-side or stacked. */
+const BAYT_SIDE_BY_SIDE_OVERHEAD_EM = 3.9;
+const BAYT_STACKED_OVERHEAD_EM = 2.9;
 
 function colorForEntity(dataset: TajweedDataset, entity: BookEntity): string {
   const category = (entity.metadata as { category?: string }).category;
@@ -122,24 +128,55 @@ export function formatBaytLines(container: HTMLElement): void {
   });
 }
 
-/** Sizes the font so the widest non-verse line just fills the page's content box. */
+/** Sizes the font so the widest line — prose or a bayt's two shatrs together — just
+ *  fills the page's content box; falls back to stacking a bayt's shatrs on separate
+ *  rows (see .stack-bayt in page-style.css) when even the minimum readable font would
+ *  still overflow side-by-side. */
 function fitFont(container: HTMLElement): void {
   const page = container.querySelector<HTMLElement>(".manuscript-page");
   if (!page) return;
   container.style.fontSize = `${BASE_FONT_PX}px`;
+  page.classList.remove("stack-bayt");
   const pageStyle = getComputedStyle(page);
   const avail =
     page.clientWidth - parseFloat(pageStyle.paddingInlineStart) - parseFloat(pageStyle.paddingInlineEnd);
+
   page.classList.add("measure");
-  let widest = 0;
+  let widestProse = 0;
   page.querySelectorAll<HTMLElement>(".page-body .line").forEach((line) => {
     if (line.closest(".poem-bayt")) return;
-    widest = Math.max(widest, line.getBoundingClientRect().width);
+    widestProse = Math.max(widestProse, line.getBoundingClientRect().width);
+  });
+  let widestBaytSideBySide = 0;
+  let widestShatr = 0;
+  page.querySelectorAll<HTMLElement>(".poem-bayt .line").forEach((line) => {
+    const shatr1 = line.querySelector<HTMLElement>(".shatr-1");
+    const shatr2 = line.querySelector<HTMLElement>(".shatr-2");
+    if (!shatr1 || !shatr2) return;
+    const w1 = shatr1.getBoundingClientRect().width;
+    const w2 = shatr2.getBoundingClientRect().width;
+    widestShatr = Math.max(widestShatr, w1, w2);
+    widestBaytSideBySide = Math.max(
+      widestBaytSideBySide,
+      w1 + w2 + BAYT_SIDE_BY_SIDE_OVERHEAD_EM * BASE_FONT_PX,
+    );
   });
   page.classList.remove("measure");
-  if (widest > 0) {
-    container.style.fontSize = `${Math.min(MAX_FONT_PX, (BASE_FONT_PX * avail) / widest)}px`;
+
+  const sideBySideWidest = Math.max(widestProse, widestBaytSideBySide);
+  const sideBySideFontPx = sideBySideWidest > 0 ? (BASE_FONT_PX * avail) / sideBySideWidest : MAX_FONT_PX;
+
+  if (sideBySideFontPx >= MIN_FONT_PX || widestShatr === 0) {
+    container.style.fontSize = `${Math.min(MAX_FONT_PX, sideBySideFontPx)}px`;
+    return;
   }
+
+  // Side-by-side would force the font below a readable size (and clip shatr-2 in
+  // RTL overflow) — stack the bayt's two shatrs instead, which needs far less width.
+  page.classList.add("stack-bayt");
+  const stackedWidest = Math.max(widestProse, widestShatr + BAYT_STACKED_OVERHEAD_EM * BASE_FONT_PX);
+  const stackedFontPx = stackedWidest > 0 ? (BASE_FONT_PX * avail) / stackedWidest : MAX_FONT_PX;
+  container.style.fontSize = `${Math.min(MAX_FONT_PX, stackedFontPx)}px`;
 }
 
 /** Sizes each bayt's two verse-half columns to this page's own longest half, not a 50/50 split. */
