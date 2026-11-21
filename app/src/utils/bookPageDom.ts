@@ -128,102 +128,83 @@ export function formatBaytLines(container: HTMLElement): void {
   });
 }
 
-/** Sizes the font so the widest line — prose or a bayt's two shatrs together — just
- *  fills the page's content box; falls back to stacking a bayt's shatrs on separate
- *  rows (see .stack-bayt in page-style.css) when even the minimum readable font would
- *  still overflow side-by-side. */
-function fitFont(container: HTMLElement): void {
+/**
+ * Recomputes font size, column alignments, and short-line markers in a single
+ * layout-measurement pass to avoid layout thrashing and stutter during page navigation.
+ */
+export function refitBookPage(container: HTMLElement): void {
   const page = container.querySelector<HTMLElement>(".manuscript-page");
   if (!page) return;
+
   container.style.fontSize = `${BASE_FONT_PX}px`;
   page.classList.remove("stack-bayt");
   const pageStyle = getComputedStyle(page);
   const avail =
     page.clientWidth - parseFloat(pageStyle.paddingInlineStart) - parseFloat(pageStyle.paddingInlineEnd);
+  if (avail <= 0) return;
 
+  // Single measurement pass with .measure enabled
   page.classList.add("measure");
+
   let widestProse = 0;
   page.querySelectorAll<HTMLElement>(".page-body .line").forEach((line) => {
     if (line.closest(".poem-bayt")) return;
     widestProse = Math.max(widestProse, line.getBoundingClientRect().width);
   });
+
   let widestBaytSideBySide = 0;
   let widestShatr = 0;
-  page.querySelectorAll<HTMLElement>(".poem-bayt .line").forEach((line) => {
-    const shatr1 = line.querySelector<HTMLElement>(".shatr-1");
-    const shatr2 = line.querySelector<HTMLElement>(".shatr-2");
-    if (!shatr1 || !shatr2) return;
+  let max1 = 0;
+  let max2 = 0;
+
+  const baytRows = [...page.querySelectorAll(".poem-bayt .line")]
+    .map((line) => ({
+      shatr1: line.querySelector<HTMLElement>(".shatr-1"),
+      shatr2: line.querySelector<HTMLElement>(".shatr-2"),
+    }))
+    .filter((row): row is { shatr1: HTMLElement; shatr2: HTMLElement } => Boolean(row.shatr1 && row.shatr2));
+
+  baytRows.forEach(({ shatr1, shatr2 }) => {
     const w1 = shatr1.getBoundingClientRect().width;
     const w2 = shatr2.getBoundingClientRect().width;
+    max1 = Math.max(max1, w1);
+    max2 = Math.max(max2, w2);
     widestShatr = Math.max(widestShatr, w1, w2);
     widestBaytSideBySide = Math.max(
       widestBaytSideBySide,
       w1 + w2 + BAYT_SIDE_BY_SIDE_OVERHEAD_EM * BASE_FONT_PX,
     );
   });
+
+  const shortLineCandidates = [
+    ...page.querySelectorAll<HTMLElement>(".book-paragraph .line, .sanad-block .line, .footnote .line"),
+  ].map((line) => ({ line, width: line.getBoundingClientRect().width }));
+
   page.classList.remove("measure");
 
+  // Determine font size
   const sideBySideWidest = Math.max(widestProse, widestBaytSideBySide);
   const sideBySideFontPx = sideBySideWidest > 0 ? (BASE_FONT_PX * avail) / sideBySideWidest : MAX_FONT_PX;
 
-  if (sideBySideFontPx >= MIN_FONT_PX || widestShatr === 0) {
-    container.style.fontSize = `${Math.min(MAX_FONT_PX, sideBySideFontPx)}px`;
-    return;
+  let finalFontPx = Math.min(MAX_FONT_PX, sideBySideFontPx);
+  if (sideBySideFontPx < MIN_FONT_PX && widestShatr > 0) {
+    page.classList.add("stack-bayt");
+    const stackedWidest = Math.max(widestProse, widestShatr + BAYT_STACKED_OVERHEAD_EM * BASE_FONT_PX);
+    const stackedFontPx = stackedWidest > 0 ? (BASE_FONT_PX * avail) / stackedWidest : MAX_FONT_PX;
+    finalFontPx = Math.min(MAX_FONT_PX, stackedFontPx);
   }
 
-  // Side-by-side would force the font below a readable size (and clip shatr-2 in
-  // RTL overflow) — stack the bayt's two shatrs instead, which needs far less width.
-  page.classList.add("stack-bayt");
-  const stackedWidest = Math.max(widestProse, widestShatr + BAYT_STACKED_OVERHEAD_EM * BASE_FONT_PX);
-  const stackedFontPx = stackedWidest > 0 ? (BASE_FONT_PX * avail) / stackedWidest : MAX_FONT_PX;
-  container.style.fontSize = `${Math.min(MAX_FONT_PX, stackedFontPx)}px`;
-}
+  container.style.fontSize = `${finalFontPx}px`;
 
-/** Sizes each bayt's two verse-half columns to this page's own longest half, not a 50/50 split. */
-function alignBaytColumns(container: HTMLElement): void {
-  const page = container.querySelector<HTMLElement>(".manuscript-page");
-  if (!page) return;
-  const rows = [...page.querySelectorAll(".poem-bayt .line")]
-    .map((line) => ({
-      shatr1: line.querySelector<HTMLElement>(".shatr-1"),
-      shatr2: line.querySelector<HTMLElement>(".shatr-2"),
-    }))
-    .filter((row): row is { shatr1: HTMLElement; shatr2: HTMLElement } => Boolean(row.shatr1 && row.shatr2));
-  if (!rows.length) return;
-  page.classList.add("measure");
-  let max1 = 0;
-  let max2 = 0;
-  rows.forEach(({ shatr1, shatr2 }) => {
-    max1 = Math.max(max1, shatr1.getBoundingClientRect().width);
-    max2 = Math.max(max2, shatr2.getBoundingClientRect().width);
+  // Set verse column widths
+  if (baytRows.length > 0) {
+    page.style.setProperty("--shatr1-col", `${(max1 / BASE_FONT_PX).toFixed(3)}em`);
+    page.style.setProperty("--shatr2-col", `${(max2 / BASE_FONT_PX).toFixed(3)}em`);
+  }
+
+  // Mark short lines
+  const scale = finalFontPx / BASE_FONT_PX;
+  shortLineCandidates.forEach(({ line, width }) => {
+    line.classList.toggle("short-line", width * scale < avail * SHORT_LINE_RATIO);
   });
-  page.classList.remove("measure");
-  const fontPx = parseFloat(getComputedStyle(page).fontSize) || 16;
-  page.style.setProperty("--shatr1-col", `${(max1 / fontPx).toFixed(3)}em`);
-  page.style.setProperty("--shatr2-col", `${(max2 / fontPx).toFixed(3)}em`);
-}
-
-/** Right-aligns prose/footnote lines whose natural width falls well short of the page width. */
-function markShortLines(container: HTMLElement): void {
-  const page = container.querySelector<HTMLElement>(".manuscript-page");
-  if (!page) return;
-  const pageStyle = getComputedStyle(page);
-  const avail =
-    page.clientWidth - parseFloat(pageStyle.paddingInlineStart) - parseFloat(pageStyle.paddingInlineEnd);
-  if (avail <= 0) return;
-  page.classList.add("measure");
-  page.querySelectorAll<HTMLElement>(".book-paragraph .line, .sanad-block .line, .footnote .line").forEach(
-    (line) => {
-      const width = line.getBoundingClientRect().width;
-      line.classList.toggle("short-line", width < avail * SHORT_LINE_RATIO);
-    },
-  );
-  page.classList.remove("measure");
-}
-
-/** Recomputes font size and column/alignment layout; call after render and on resize. */
-export function refitBookPage(container: HTMLElement): void {
-  fitFont(container);
-  alignBaytColumns(container);
-  markShortLines(container);
 }

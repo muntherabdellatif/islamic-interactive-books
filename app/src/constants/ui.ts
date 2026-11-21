@@ -16,3 +16,7 @@ export const ANNOTATED_EDITION_MAX_PAGE = 10 as const;
 
 export const MAKHRAJ_3D_MAX_YAW_DEGREES = 60 as const;
 export const MAKHRAJ_3D_IDLE_ROTATION_SPEED = 0.08 as const;
+
+export const PAGE_PREFETCH_RADIUS = 2 as const;
+export const PAGE_PRELOAD_IDLE_DELAY_MS = 300 as const;
+

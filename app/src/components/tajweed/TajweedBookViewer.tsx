@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import type { BookSummary } from "../../types/book";
 import type { TajweedDataset } from "../../services/tajweedDataService";
+import { prefetchAllPagesInBackground } from "../../services/tajweedDataService";
 import { useTajweedBookData } from "../../hooks/useTajweedBookData";
 import { useBookViewerController } from "../../hooks/useBookViewerController";
 import { BookArea } from "../book/BookArea";
@@ -11,6 +13,12 @@ export interface TajweedBookViewerProps {
 
 function TajweedBookViewerReady({ book, dataset }: TajweedBookViewerProps & { dataset: TajweedDataset }) {
   const controller = useBookViewerController(dataset, book.pageCount);
+
+  useEffect(() => {
+    const cancel = prefetchAllPagesInBackground(book.id, book.pageCount);
+    return cancel;
+  }, [book.id, book.pageCount]);
+
   // dir="ltr" here only to pin physical left/right of the two panes (book right, tool left,
   // matching Arabic reading order) via CSS grid-column/order; each pane restores dir="rtl".
   return (
