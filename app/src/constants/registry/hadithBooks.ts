@@ -18,7 +18,7 @@ export const HADITH_BOOKS: readonly BookSummary[] = [
     authorAr: "عمر بن محمد البيقوني",
     type: "hadith",
     status: "coming-soon",
-    pageCount: 8,
+    pageCount: 18,
     learningPathIds: ["hadith-terminology"],
     descriptionAr:
       "منظومة موجزة محكمة (34 بيتاً) تُعرّف بأقسام الحديث وأنواعه، مع شجرة قرارات لتصنيف الحديث طبقاً لصفات سنده ومتنه.",

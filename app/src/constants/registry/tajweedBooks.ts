@@ -18,7 +18,7 @@ export const TAJWEED_BOOKS: readonly BookSummary[] = [
     authorAr: "محمد بن الجزري الشافعي",
     type: "tajweed",
     status: "coming-soon",
-    pageCount: 16,
+    pageCount: 42,
     learningPathIds: ["quran-recitation"],
     descriptionAr:
       "المنظومة الأهم في علم التجويد (107 أبيات)؛ تتناول مخارج الحروف وصفاتها وأحكام الراءات والترقيق والتفخيم والوقف والابتداء.",
