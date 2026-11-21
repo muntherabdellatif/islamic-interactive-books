@@ -1,0 +1,162 @@
+/* Home / About pages — outside the split-screen book viewer, so they scroll normally and use
+   the warm parchment palette directly instead of the dark top-bar tokens. */
+.page-content {
+  background: var(--parchment);
+  padding: 32px 24px 60px;
+  min-height: 100%;
+}
+
+.home-hero,
+.about-section {
+  max-width: 880px;
+  margin: 0 auto 36px;
+}
+.home-hero h1,
+.about-section h1 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.home-hero p,
+.about-section p {
+  color: var(--ink-muted);
+  line-height: 1.8;
+  font-size: 1.02rem;
+}
+
+.home-section {
+  max-width: 1080px;
+  margin: 0 auto 40px;
+}
+.home-section h2,
+.about-section h2 {
+  font-family: var(--font-display);
+  color: var(--amber);
+  margin-bottom: 14px;
+}
+
+.book-type-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.book-type-filter button {
+  background: #fff;
+  border: 1.5px solid var(--parchment-border);
+  color: var(--ink);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 18px;
+}
+.book-type-filter button.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #fff;
+}
+
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.book-card {
+  display: block;
+  border: 1px solid var(--parchment-border);
+  border-radius: var(--radius);
+  background: var(--parchment-card);
+  padding: 18px 20px;
+  color: var(--ink);
+  text-decoration: none;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.book-card:hover {
+  box-shadow: 0 8px 20px rgba(36, 31, 24, 0.12);
+  transform: translateY(-2px);
+}
+.book-card-disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.book-card-title {
+  font-weight: 800;
+  font-size: 1.08rem;
+  margin-bottom: 4px;
+}
+.book-card-author {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.book-card-description {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+.book-card-status {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.status-available {
+  background: rgba(15, 106, 74, 0.15);
+  color: var(--emerald);
+}
+.status-coming-soon {
+  background: rgba(169, 120, 31, 0.15);
+  color: var(--amber);
+}
+
+.learning-path-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.learning-path-card {
+  border: 1px dashed var(--parchment-border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  background: #fff;
+}
+.learning-path-title {
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.learning-path-description {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.about-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.about-type-card {
+  border: 1px solid var(--parchment-border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: var(--parchment-card);
+}
+.about-type-card h3 {
+  margin: 0 0 6px;
+  color: var(--amber);
+  font-size: 1rem;
+}
+.about-type-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+.about-pipeline-list {
+  color: var(--ink-muted);
+  line-height: 1.8;
+  padding-inline-start: 1.4em;
+}

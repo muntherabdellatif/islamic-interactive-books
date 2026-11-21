@@ -1,0 +1,155 @@
+/* App shell + split screen. Book is physically LEFT, interactive panel physically RIGHT,
+   regardless of the page's own RTL text direction (pinned explicitly, not left to dir="rtl"). */
+.app-shell {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-nav {
+  height: 64px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: rgba(11, 41, 26, 0.92);
+  border-bottom: 1px solid rgba(198, 155, 82, 0.25);
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+.nav-brand { display: flex; align-items: center; gap: 10px; }
+.brand-title { font-size: 1.05rem; font-weight: 800; color: #fff; }
+.brand-subtitle { font-size: 0.7rem; color: var(--gold); display: block; }
+
+.nav-pager {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(6, 25, 15, 0.6);
+  border: 1px solid rgba(198, 155, 82, 0.3);
+  border-radius: 24px;
+  padding: 4px 8px;
+}
+.nav-pager button {
+  background: transparent;
+  border: none;
+  color: var(--text-on-dark);
+  font-size: 1rem;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.nav-pager button:hover { background: rgba(198, 155, 82, 0.25); }
+.nav-pager button:disabled { opacity: 0.3; cursor: default; }
+.nav-pager input {
+  width: 42px; text-align: center; font: inherit;
+  background: transparent; border: none; color: #fff;
+}
+.nav-pager .of { color: var(--text-muted); font-size: 0.85rem; }
+
+.nav-tools { display: flex; gap: 8px; align-items: center; }
+.nav-tools button {
+  background: rgba(198, 155, 82, 0.15);
+  border: 1px solid rgba(198, 155, 82, 0.4);
+  color: var(--text-on-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 18px;
+  transition: all 0.2s;
+}
+.nav-tools button:hover, .nav-tools button.active {
+  background: var(--gold);
+  color: var(--bg-dark);
+}
+
+.split-workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+}
+
+.pane {
+  overflow-y: auto;
+  position: relative;
+}
+
+.pane-book {
+  grid-column: 1;
+  background: var(--parchment);
+  order: 1;
+}
+
+.pane-panel {
+  grid-column: 2;
+  order: 2;
+  background: #f4efe2;
+  padding: 18px 22px 60px;
+}
+
+@media (max-width: 900px) {
+  .split-workspace { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+  .pane-book { grid-column: 1; grid-row: 1; }
+  .pane-panel { grid-column: 1; grid-row: 2; }
+}
+
+.panel-section + .panel-section { margin-top: 22px; }
+.panel-section-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.panel-section-title .count { color: var(--text-muted); font-weight: 500; font-size: 0.78rem; }
+
+.empty-panel-note {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 30px 10px;
+}
+
+/* App-level additions for the multi-book platform (Home/About/BookViewer routing). */
+.app-main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--parchment);
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-tools a {
+  background: rgba(198, 155, 82, 0.15);
+  border: 1px solid rgba(198, 155, 82, 0.4);
+  color: var(--text-on-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 18px;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.nav-tools a:hover,
+.nav-tools a.active {
+  background: var(--gold);
+  color: var(--bg-dark);
+}
+
+.loading-note,
+.error-note,
+.coming-soon-note,
+.not-found-note {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+.error-note {
+  color: var(--danger);
+}

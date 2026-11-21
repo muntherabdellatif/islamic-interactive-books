@@ -1,0 +1,175 @@
+/* Tab bar — one tab per leaf rule in the current chapter, plus نظرة عامة ومخارج الحروف. */
+.panel-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(169, 120, 31, 0.25);
+}
+.panel-tab {
+  background: #fff;
+  border: 1.5px solid color-mix(in srgb, var(--tab-color, var(--gold)) 45%, transparent);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 16px;
+  white-space: nowrap;
+}
+.panel-tab:hover { border-color: var(--tab-color, var(--gold)); }
+.panel-tab.active {
+  background: color-mix(in srgb, var(--tab-color, var(--gold)) 20%, #fff);
+  border-color: var(--tab-color, var(--gold));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tab-color, var(--gold)) 40%, transparent);
+}
+
+.panel-subsection-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--amber);
+  margin: 16px 0 6px;
+}
+
+.rule-detail .rule-title {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--ink);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rule-detail .rule-simplified {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--ink);
+}
+
+.rule-card-actions-btn, .show-in-book-btn {
+  background: rgba(169, 120, 31, 0.1);
+  border: 1px solid rgba(169, 120, 31, 0.45);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 14px;
+}
+.rule-card-actions-btn:hover, .show-in-book-btn:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+
+.matn-quote-box {
+  font-family: var(--font-manuscript);
+  font-size: 1.1rem;
+  color: var(--ink);
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 14px;
+  border-right: 3px solid var(--card-color, var(--gold));
+}
+
+.no-examples-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Overview tab: rule tree + letter picker. */
+.rule-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rule-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid rgba(169, 120, 31, 0.3);
+  border-inline-start: 4px solid var(--card-color, var(--emerald));
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: var(--ink);
+  font-size: 0.9rem;
+  text-align: start;
+}
+.rule-tree-item:hover { border-color: var(--gold); }
+
+.letter-picker { margin-top: 18px; }
+.letter-picker-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.letter-chip-pick { cursor: pointer; }
+.letter-chip-pick:hover { background: #f3e9d2; }
+
+.goal-banner {
+  border: 1px dashed rgba(169, 120, 31, 0.5);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  background: var(--parchment-card);
+}
+
+/* Book intro (chapters 1/10 and non-chapter pages): entices the reader onward. */
+.intro-card {
+  background: var(--parchment-card);
+  border: 1px solid rgba(169, 120, 31, 0.3);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.chapter-map {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.chapter-map-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid rgba(169, 120, 31, 0.25);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--ink);
+  font-size: 0.88rem;
+  text-align: start;
+}
+.chapter-map-item:hover { border-color: var(--gold); }
+.chapter-map-item .cm-order {
+  flex: none;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--emerald);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: grid; place-items: center;
+}
+.secret-fact-card {
+  background: #fff8e8;
+  border: 1px dashed var(--gold);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  cursor: pointer;
+}
+.secret-fact-card .reveal { display: none; margin-top: 6px; color: var(--text-muted); }
+.secret-fact-card.open .reveal { display: block; }
+
+/* Small presentational classes replacing one-off inline styles from the original card-builders.js. */
+.person-name { font-weight: 700; }
+.person-role { font-size: 0.75rem; color: var(--text-muted); }
+.doc-section-title { font-weight: 700; margin: 2px 0; }
+.doc-section-summary { font-size: 0.88rem; color: var(--ink); }
+.mnemonic-note { margin-top: 4px; color: var(--ink); }
+.chapter-map-range { color: var(--text-muted); font-size: 0.78rem; }
+.matn-quote-action { margin-top: 6px; }
+.play-btn-disabled { background: #555; }

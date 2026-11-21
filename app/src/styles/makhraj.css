@@ -1,0 +1,100 @@
+/* The "مخارج الحروف" tab — big, friendly, colorful zones for children on a light background. */
+/* The 3D head/neck mount (see makhraj-3d.js) is the main visual now; the zone row below it
+   is a slim legend/selector, not the primary content, so it no longer needs giant cards. */
+.mk-3d-mount {
+  width: 100%;
+  height: 260px;
+  border-radius: var(--radius);
+  background: radial-gradient(ellipse at center, #fffef9 0%, #f3ecd9 100%);
+  border: 1px solid var(--parchment-border);
+  margin-bottom: 10px;
+  touch-action: none;
+  cursor: grab;
+}
+.mk-3d-mount:active { cursor: grabbing; }
+
+.mk-detail-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 5px 12px;
+  margin-bottom: 10px;
+  border-radius: 20px;
+  background: rgba(169, 120, 31, 0.1);
+  border: 1px solid rgba(169, 120, 31, 0.4);
+  color: var(--amber);
+}
+.mk-detail-toggle:hover { background: rgba(169, 120, 31, 0.18); }
+
+.mk-zones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.mk-zone {
+  background: color-mix(in srgb, var(--zone-color) 10%, #fff);
+  border: 1.5px solid color-mix(in srgb, var(--zone-color) 40%, transparent);
+  border-radius: 20px;
+  padding: 6px 12px 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.mk-zone:hover { transform: translateY(-1px); }
+.mk-zone.active {
+  border-color: var(--zone-color);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--zone-color) 35%, transparent);
+  background: color-mix(in srgb, var(--zone-color) 22%, #fff);
+}
+.mk-zone-icon { font-size: 1.05rem; }
+.mk-zone-label { font-size: 0.8rem; font-weight: 700; }
+
+.mk-detail-card {
+  border: 1px solid color-mix(in srgb, var(--zone-color) 50%, transparent);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  background: color-mix(in srgb, var(--zone-color) 8%, #fff);
+}
+.mk-detail-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+/* Inline mini-map embedded directly in a rule tab (no extra click needed). */
+.mk-inline-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.mk-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: color-mix(in srgb, var(--zone-color) 10%, #fff);
+  border: 1px solid color-mix(in srgb, var(--zone-color) 45%, transparent);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.mk-inline-icon { font-size: 1.6rem; flex: none; }
+.mk-inline-body strong { font-size: 0.85rem; color: var(--ink); }
+.mk-inline-body .letter-set { margin-top: 4px; margin-bottom: 0; }
+
+.makhraj-note {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.mk-hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}

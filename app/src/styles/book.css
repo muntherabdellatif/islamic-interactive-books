@@ -1,0 +1,121 @@
+/* Left pane: the manuscript page itself, plus the page-turn animation. */
+.book-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(251, 248, 238, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--parchment-border);
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  justify-content: space-between;
+}
+
+/* Page navigation controls reused from the global nav-pager/nav-tools look, retinted for
+   this toolbar's light (parchment) background instead of the dark top bar they were
+   originally styled for. */
+.book-toolbar .nav-pager {
+  background: rgba(169, 120, 31, 0.08);
+  border-color: var(--parchment-border);
+}
+.book-toolbar .nav-pager button {
+  color: var(--ink);
+}
+.book-toolbar .nav-pager button:hover {
+  background: var(--gold-glow);
+}
+.book-toolbar .nav-pager input {
+  color: var(--ink);
+}
+.book-toolbar .nav-tools button {
+  background: rgba(169, 120, 31, 0.1);
+  border-color: var(--parchment-border);
+  color: var(--ink);
+}
+.book-toolbar .nav-tools button:hover,
+.book-toolbar .nav-tools button.active {
+  background: var(--gold);
+  color: var(--parchment);
+}
+
+.book-scroll-area {
+  perspective: 1800px;
+  padding: 26px 34px 60px;
+  font-size: 20px; /* overridden per-page by BookView.fitFont(), reusing page-style.css's .measure mode,
+                       so the widest natural line fills the pane — same technique as review/index.html. */
+}
+
+.manuscript-page {
+  direction: rtl;
+  font-family: var(--font-manuscript);
+  font-size: inherit;
+  line-height: 1.95;
+  color: var(--ink);
+  background: var(--parchment-card);
+  background-image: radial-gradient(#f0e8d0 10%, transparent 11%);
+  background-size: 14px 14px;
+  border: 1px solid var(--parchment-border);
+  border-radius: 6px;
+  padding: 22px 30px;
+  max-width: 750px;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  transform-origin: right center;
+  animation: page-settle 0.38s ease;
+}
+
+@keyframes page-settle {
+  from { opacity: 0; transform: rotateY(-8deg) translateX(14px); }
+  to   { opacity: 1; transform: rotateY(0) translateX(0); }
+}
+
+.manuscript-page.flip-out {
+  animation: page-flip-out 0.22s ease forwards;
+}
+@keyframes page-flip-out {
+  to { opacity: 0; transform: rotateY(10deg) translateX(-14px); }
+}
+
+.manuscript-page.scan-mode {
+  padding: 0;
+  background: #111;
+  text-align: center;
+}
+.manuscript-page.scan-mode img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Entity highlights, reused from review/entities.html's scheme. */
+.ent {
+  border-radius: 2px;
+  padding: 0 1px;
+  cursor: pointer;
+  transition: outline-color 0.15s;
+}
+.ent.ent-bayt { outline: 1.5px dashed transparent; outline-offset: 2px; }
+.ent.selected {
+  outline: 2px solid var(--rule-color, var(--emerald)) !important;
+  background: color-mix(in srgb, var(--rule-color, var(--emerald)) 22%, transparent);
+}
+.ent.needs-review {
+  text-decoration: underline wavy var(--danger);
+  text-decoration-thickness: 1.5px;
+}
+
+.page-jump-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  background: rgba(198, 155, 82, 0.15);
+  border: 1px solid rgba(198, 155, 82, 0.4);
+  border-radius: 10px;
+  padding: 1px 6px;
+  margin-inline-start: 6px;
+}
