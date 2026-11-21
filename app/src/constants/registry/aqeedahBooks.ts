@@ -18,7 +18,7 @@ export const AQEEDAH_BOOKS: readonly BookSummary[] = [
     authorAr: "محمد بن عبد الوهاب",
     type: "aqeedah",
     status: "coming-soon",
-    pageCount: 8,
+    pageCount: 9,
     learningPathIds: ["aqeedah-foundations"],
     descriptionAr:
       "رسالة وجيزة تبيّن حقيقة التوحيد والشرك بقواعد أربع استقرائية من القرآن الكريم عبر شجرة مقارنة استدلالية.",
@@ -40,7 +40,7 @@ export const AQEEDAH_BOOKS: readonly BookSummary[] = [
     authorAr: "أحمد بن عبد الحليم بن تيمية (ت 728 هـ)",
     type: "aqeedah",
     status: "coming-soon",
-    pageCount: 28,
+    pageCount: 38,
     learningPathIds: ["aqeedah-foundations"],
     descriptionAr:
       "المتن العقدي الأشهر في تقرير عقيدة أهل السنة والجماعة، مقسّم في فصول محكمة تبيّن آيات الصفات وأصول الإيمان وأخلاق أهل الحديث.",

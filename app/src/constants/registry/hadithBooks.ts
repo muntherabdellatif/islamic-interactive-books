@@ -7,7 +7,7 @@ export const HADITH_BOOKS: readonly BookSummary[] = [
     authorAr: "يحيى بن شرف النووي",
     type: "hadith",
     status: "coming-soon",
-    pageCount: 36,
+    pageCount: 170,
     learningPathIds: ["hadith-terminology"],
     descriptionAr:
       "اثنان وأربعون حديثاً نبوياً تدور عليها قواعد الإسلام، مع شبكة تفاعلية لتراجم الرواة واستخراج القواعد الفقهية والتربوية.",
@@ -29,7 +29,7 @@ export const HADITH_BOOKS: readonly BookSummary[] = [
     authorAr: "ابن حجر العسقلاني",
     type: "hadith",
     status: "coming-soon",
-    pageCount: 18,
+    pageCount: 8,
     learningPathIds: ["hadith-terminology"],
     descriptionAr:
       "عمدة أصول الحديث المنطقي؛ تقسيمات حصرية دقيقة للخبر المتواتر والآحاد والمقبول والمردود وشروط الصحة والعلل.",

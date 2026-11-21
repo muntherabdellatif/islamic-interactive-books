@@ -18,7 +18,7 @@ export const FIQH_BOOKS: readonly BookSummary[] = [
     authorAr: "موفق الدين ابن قدامة المقدسي",
     type: "fiqh",
     status: "coming-soon",
-    pageCount: 72,
+    pageCount: 176,
     learningPathIds: ["comparative-fiqh"],
     descriptionAr:
       "متن فقهي محرّر على قول واحد معتمد في المذهب الحنبلي، يغطي العبادات والمعاملات بشجرة أحكام متدرجة.",
@@ -29,7 +29,7 @@ export const FIQH_BOOKS: readonly BookSummary[] = [
     authorAr: "عبد الواحد بن عاشر الفاسي",
     type: "fiqh",
     status: "coming-soon",
-    pageCount: 28,
+    pageCount: 32,
     learningPathIds: ["comparative-fiqh"],
     descriptionAr:
       "منظومة جامعة للأحكام الفقهية على مذهب الإمام مالك (الطهارة، الصلاة، الصيام، الزكاة، الحج) بمخططات بصرية إرشادية.",
@@ -40,7 +40,7 @@ export const FIQH_BOOKS: readonly BookSummary[] = [
     authorAr: "أبو الحسين أحمد بن محمد القدوري",
     type: "fiqh",
     status: "coming-soon",
-    pageCount: 68,
+    pageCount: 255,
     learningPathIds: ["comparative-fiqh"],
     descriptionAr:
       "متن الفقه الحنفي المعتمد؛ يفرّع مسائل ظاهر الرواية وأدلتها الشرعية مع معجم للمصطلحات الفقهية الحنفية.",
@@ -51,7 +51,7 @@ export const FIQH_BOOKS: readonly BookSummary[] = [
     authorAr: "محمد بن علي الرحبي",
     type: "faraid",
     status: "coming-soon",
-    pageCount: 18,
+    pageCount: 9,
     learningPathIds: ["inheritance-math"],
     descriptionAr:
       "منظومة الفرائض والمواريث (175 بيتاً)؛ مربوطة بحاسبة مواريث تفاعلية توزع التركات وتبين استحقاق كل وارث وسنده من المنظومة.",

@@ -29,7 +29,7 @@ export const TAJWEED_BOOKS: readonly BookSummary[] = [
     authorAr: "محمد بن الجزري",
     type: "tajweed",
     status: "coming-soon",
-    pageCount: 24,
+    pageCount: 67,
     learningPathIds: ["quran-recitation"],
     descriptionAr:
       "منظومة رائية تبين قراءات الأئمة الثلاثة (أبو جعفر، يعقوب، خلف العاشر) متممة للشاطبية مع مقارنة تفاعلية لأصول الروايات.",
@@ -40,7 +40,7 @@ export const TAJWEED_BOOKS: readonly BookSummary[] = [
     authorAr: "القاسم بن فيرّه الشاطبي",
     type: "tajweed",
     status: "coming-soon",
-    pageCount: 22,
+    pageCount: 95,
     learningPathIds: ["quran-recitation"],
     descriptionAr:
       "قسم الأصول ورموز القراء السبعة ورواتهم في الشاطبية، مع أداة تفاعلية لفك وترجمة الرموز الحرفية والكلمية فورياً.",

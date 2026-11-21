@@ -7,7 +7,7 @@ export const USUL_BOOKS: readonly BookSummary[] = [
     authorAr: "عبد الملك بن عبد الله الجويني (إمام الحرمين)",
     type: "usul",
     status: "coming-soon",
-    pageCount: 16,
+    pageCount: 30,
     learningPathIds: ["usul-and-qawaid"],
     descriptionAr:
       "المتن الوجيز الأشهر في أصول الفقه؛ خريطة مفاهيمية لمباحث الأمر، والنهي، والعام، والخاص، والإجماع، والقياس.",
@@ -18,7 +18,7 @@ export const USUL_BOOKS: readonly BookSummary[] = [
     authorAr: "جلال الدين عبد الرحمن السيوطي (ت 911 هـ)",
     type: "usul",
     status: "coming-soon",
-    pageCount: 16,
+    pageCount: 130,
     learningPathIds: ["usul-and-qawaid"],
     descriptionAr:
       "القواعد الخمس الكلية التي يدور عليها الفقه الإسلامي (الأمور بمقاصدها، اليقين، المشقة، الضرر، العادة) مع تفريعاتها ونوازلها.",

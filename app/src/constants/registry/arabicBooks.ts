@@ -7,7 +7,7 @@ export const ARABIC_BOOKS: readonly BookSummary[] = [
     authorAr: "محمد بن محمد بن آجرّوم الصنهاجي",
     type: "arabic",
     status: "coming-soon",
-    pageCount: 20,
+    pageCount: 51,
     learningPathIds: ["arabic-grammar"],
     descriptionAr:
       "المتن النحوي الأوسع انتشاراً؛ شجرة إعراب تفاعلية للمرفوعات والمنصوبات والمجرورات والمجزومات مع تلوين دلالي.",
@@ -18,7 +18,7 @@ export const ARABIC_BOOKS: readonly BookSummary[] = [
     authorAr: "القاسم بن علي الحريري",
     type: "arabic",
     status: "coming-soon",
-    pageCount: 30,
+    pageCount: 51,
     learningPathIds: ["arabic-grammar"],
     descriptionAr:
       "أرجوزة نحوية تعليمية رشيقة (375 بيتاً) تُقرّب أبواب النحو واللغة بأمثلة وشواهد شعرية وتمارين إعرابية تفاعلية.",
@@ -29,7 +29,7 @@ export const ARABIC_BOOKS: readonly BookSummary[] = [
     authorAr: "محب الدين ابن الشحنة الحلبي",
     type: "arabic",
     status: "coming-soon",
-    pageCount: 14,
+    pageCount: 13,
     learningPathIds: ["arabic-grammar"],
     descriptionAr:
       "مئة بيت تجمع أصول علوم البلاغة الثلاثة (المعاني والبيان والبديع) مع مستكشف تفاعلي للصور والأسرار البلاغية القرآنية.",

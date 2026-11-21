@@ -7,7 +7,7 @@ export const SEERAH_BOOKS: readonly BookSummary[] = [
     authorAr: "علي بن علي بن أبي العز الحنفي",
     type: "seerah",
     status: "coming-soon",
-    pageCount: 14,
+    pageCount: 16,
     learningPathIds: ["prophetic-seerah"],
     descriptionAr:
       "مئة بيت شعري ترتب وقائع السيرة النبوية زمنياً سنة بسنة من الميلاد حتى الوفاة، مع خط زمني جغرافي تفاعلي.",
@@ -18,7 +18,7 @@ export const SEERAH_BOOKS: readonly BookSummary[] = [
     authorAr: "محمد بن عيسى الترمذي",
     type: "seerah",
     status: "coming-soon",
-    pageCount: 46,
+    pageCount: 129,
     learningPathIds: ["prophetic-seerah"],
     descriptionAr:
       "الأوصاف الخِلقية والخُلقية للنبي ﷺ وسيرته في مأكله وملبسه ونومه وعبادته، في بطاقات مصورة موثقة بالسنة المطهرة.",
