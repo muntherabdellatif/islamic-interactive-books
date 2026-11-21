@@ -21,11 +21,24 @@ export function OverviewTab({ dataset, chapter, onPickRule, onShowBayt, onShowCh
   const leafRules = leafRulesOfChapter(dataset, chapter);
   const quiz = quizFor(dataset, chapter.id);
   const videos = chapterVideos(dataset, chapter.id);
+  const isIntroChapter = chapter.id === "chapter.muqaddimah";
+
+  const returnBanner = !isIntroChapter ? (
+    <button
+      type="button"
+      className="return-to-intro-banner"
+      onClick={() => onShowChapter("chapter.muqaddimah")}
+    >
+      <span className="return-intro-title">📑 العودة إلى المقدمة وفهرس المنظومة (صفحة ١٢)</span>
+      <span className="return-intro-arrow">←</span>
+    </button>
+  ) : null;
 
   if (!leafRules.length) {
     // Chapters 1 (المقدمة) and 10 (الخاتمة) carry no tajweed rules of their own.
     return (
       <>
+        {returnBanner}
         <ChapterHero chapter={chapter} />
         <VideoSection videos={videos} />
         <BookIntro dataset={dataset} onShowChapter={onShowChapter} />
@@ -35,6 +48,7 @@ export function OverviewTab({ dataset, chapter, onPickRule, onShowBayt, onShowCh
 
   return (
     <>
+      {returnBanner}
       <ChapterHero chapter={chapter} />
       <VideoSection videos={videos} />
       <div className="panel-section">

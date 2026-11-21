@@ -13,10 +13,22 @@ export const TYPE_LABEL_AR: Record<string, string> = {
 export const DEFAULT_CARD_COLOR = "#10b981" as const;
 export const FULL_ALPHABET_SIZE = 28 as const;
 export const ANNOTATED_EDITION_MAX_PAGE = 10 as const;
+export const CLEAN_EDITION_MIN_PAGE = 12 as const;
+export const CLEAN_EDITION_MAX_PAGE = 15 as const;
+export const DEFAULT_INITIAL_PAGE = 12 as const;
 
 export const MAKHRAJ_3D_MAX_YAW_DEGREES = 60 as const;
 export const MAKHRAJ_3D_IDLE_ROTATION_SPEED = 0.08 as const;
 
 export const PAGE_PREFETCH_RADIUS = 2 as const;
 export const PAGE_PRELOAD_IDLE_DELAY_MS = 300 as const;
+
+export const MOBILE_BREAKPOINT_PX = 768 as const;
+export const TABLET_BREAKPOINT_PX = 1024 as const;
+
+export const BOOK_FONT_MAX_PX = 24 as const;
+export const BOOK_FONT_MIN_PX = 12 as const;
+export const BOOK_FONT_BASE_PX = 20 as const;
+export const BOOK_FONT_SAFETY_RATIO = 0.96 as const;
+
 

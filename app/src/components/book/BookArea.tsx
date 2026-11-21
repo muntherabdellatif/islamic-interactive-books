@@ -24,13 +24,14 @@ export function BookArea({ bookId, pageCount, dataset, controller }: BookAreaPro
   useArrowKeyPageNavigation(handleNextPage, handlePrevPage);
 
   return (
-    <section className="pane pane-book" dir="rtl" aria-label="نص الكتاب">
+    <section className="pane pane-book" dir="rtl" aria-label="نص الكتاب" id="pane-book">
       <PageNav
         pageNumber={pageNumber}
         pageCount={pageCount}
         viewMode={viewMode}
         onGoToPage={goToPage}
         onToggleViewMode={toggleViewMode}
+        onReturnToIntro={controller.returnToIntro}
       />
       {viewMode === "scan" ? (
         <ScanPage bookId={bookId} pageNumber={pageNumber} pageCount={pageCount} />

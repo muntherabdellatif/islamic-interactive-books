@@ -1,17 +1,20 @@
 import type { BookEntity } from "../types/entities";
 import type { TajweedDataset } from "../services/tajweedDataService";
 import { categoryColor, entitiesOnPage } from "../services/tajweedSelectors";
-import { DEFAULT_CARD_COLOR } from "../constants/ui";
+import {
+  BOOK_FONT_BASE_PX,
+  BOOK_FONT_MAX_PX,
+  BOOK_FONT_MIN_PX,
+  BOOK_FONT_SAFETY_RATIO,
+  DEFAULT_CARD_COLOR,
+} from "../constants/ui";
 
 const HEAVY_FOOTNOTE_LINE_THRESHOLD = 3;
 const SHORT_LINE_RATIO = 0.92;
-const MAX_FONT_PX = 24;
-const MIN_FONT_PX = 15;
-const BASE_FONT_PX = 20;
 /* A bayt row's grid (see page-style.css) reserves 2.4em for the number badge plus
    3 × 0.5em of column-gap around its tracks — fixed overhead on top of the two
    shatr widths, needed whether the row is laid out side-by-side or stacked. */
-const BAYT_SIDE_BY_SIDE_OVERHEAD_EM = 3.9;
+const BAYT_SIDE_BY_SIDE_OVERHEAD_EM = 5.6;
 const BAYT_STACKED_OVERHEAD_EM = 2.9;
 
 function colorForEntity(dataset: TajweedDataset, entity: BookEntity): string {
@@ -109,18 +112,49 @@ export function collapseHeavyFootnotes(container: HTMLElement): void {
   });
 }
 
+/** Marks standalone basmalah lines so they can be centered cleanly. */
+export function formatBasmalah(container: HTMLElement): void {
+  container.querySelectorAll<HTMLElement>(".book-paragraph").forEach((p) => {
+    const text = (p.textContent ?? "").replace(/\([٠-٩0-9]+\)/g, "").trim();
+    if (text.startsWith("بِسْمِ") && text.includes("الرَّحِيمِ")) {
+      p.classList.add("basmalah");
+    }
+  });
+}
+
 /** A bayt line's printed "٦) <shatr1/><shatr2/>" is reshaped into a number badge + two columns. */
 export function formatBaytLines(container: HTMLElement): void {
   container.querySelectorAll(".poem-bayt .line").forEach((line) => {
-    const shatr1 = line.querySelector(".shatr-1");
-    const shatr2 = line.querySelector(".shatr-2");
+    const shatr1 = line.querySelector<HTMLElement>(".shatr-1");
+    const shatr2 = line.querySelector<HTMLElement>(".shatr-2");
     if (!shatr1 || !shatr2) return;
+
+    let badgeNum = "";
     const numberNode = line.firstChild;
-    const numberText =
+    const rawNumber =
       numberNode && numberNode.nodeType === Node.TEXT_NODE ? (numberNode.textContent ?? "").trim() : "";
+    const digitMatch = rawNumber.match(/[٠-٩0-9]+/);
+
+    if (digitMatch) {
+      badgeNum = digitMatch[0];
+      if (rawNumber.endsWith("(") && !shatr1.textContent?.trim().startsWith("(")) {
+        shatr1.textContent = "(" + (shatr1.textContent ?? "");
+      }
+    }
+
+    // Check if verse number is inside shatr-1 (e.g. pages 12-15: "١) ...")
+    const shatrMatch = shatr1.innerHTML.match(/^\s*([٠-٩0-9]+)\s*\)\s*/);
+    if (shatrMatch) {
+      if (!badgeNum) {
+        badgeNum = shatrMatch[1];
+      }
+      shatr1.innerHTML = shatr1.innerHTML.replace(/^\s*[٠-٩0-9]+\s*\)\s*/, "");
+    }
+
     const badge = document.createElement("span");
     badge.className = "bayt-number";
-    badge.textContent = numberText.replace(/[)）]+\s*$/, "");
+    badge.textContent = badgeNum;
+
     for (const shatr of [shatr1, shatr2]) {
       shatr.innerHTML = shatr.innerHTML.replace(/\(([٠-٩]+)\)/g, '<span class="footnote-ref">($1)</span>');
     }
@@ -136,26 +170,26 @@ export function refitBookPage(container: HTMLElement): void {
   const page = container.querySelector<HTMLElement>(".manuscript-page");
   if (!page) return;
 
-  container.style.fontSize = `${BASE_FONT_PX}px`;
+  container.style.fontSize = `${BOOK_FONT_BASE_PX}px`;
   page.classList.remove("stack-bayt");
   const pageStyle = getComputedStyle(page);
   const avail =
     page.clientWidth - parseFloat(pageStyle.paddingInlineStart) - parseFloat(pageStyle.paddingInlineEnd);
   if (avail <= 0) return;
 
+  const safeAvail = avail * BOOK_FONT_SAFETY_RATIO;
+
   // Single measurement pass with .measure enabled
   page.classList.add("measure");
 
-  let widestProse = 0;
+  let widestBody = 0;
+  // Measure body prose lines (excluding poem bayts and excluding footnotes which wrap naturally)
   page.querySelectorAll<HTMLElement>(".page-body .line").forEach((line) => {
     if (line.closest(".poem-bayt")) return;
-    widestProse = Math.max(widestProse, line.getBoundingClientRect().width);
+    widestBody = Math.max(widestBody, line.getBoundingClientRect().width);
   });
 
-  let widestBaytSideBySide = 0;
   let widestShatr = 0;
-  let max1 = 0;
-  let max2 = 0;
 
   const baytRows = [...page.querySelectorAll(".poem-bayt .line")]
     .map((line) => ({
@@ -167,43 +201,43 @@ export function refitBookPage(container: HTMLElement): void {
   baytRows.forEach(({ shatr1, shatr2 }) => {
     const w1 = shatr1.getBoundingClientRect().width;
     const w2 = shatr2.getBoundingClientRect().width;
-    max1 = Math.max(max1, w1);
-    max2 = Math.max(max2, w2);
     widestShatr = Math.max(widestShatr, w1, w2);
-    widestBaytSideBySide = Math.max(
-      widestBaytSideBySide,
-      w1 + w2 + BAYT_SIDE_BY_SIDE_OVERHEAD_EM * BASE_FONT_PX,
-    );
   });
 
+  // Both shatrs are sized identically, so width needed is 2 * widestShatr + overhead
+  const widestBaytSideBySide =
+    baytRows.length > 0 ? 2 * widestShatr + BAYT_SIDE_BY_SIDE_OVERHEAD_EM * BOOK_FONT_BASE_PX : 0;
+
   const shortLineCandidates = [
-    ...page.querySelectorAll<HTMLElement>(".book-paragraph .line, .sanad-block .line, .footnote .line"),
+    ...page.querySelectorAll<HTMLElement>(".book-paragraph:not(.basmalah) .line, .sanad-block .line"),
   ].map((line) => ({ line, width: line.getBoundingClientRect().width }));
 
   page.classList.remove("measure");
 
-  // Determine font size
-  const sideBySideWidest = Math.max(widestProse, widestBaytSideBySide);
-  const sideBySideFontPx = sideBySideWidest > 0 ? (BASE_FONT_PX * avail) / sideBySideWidest : MAX_FONT_PX;
+  // Determine maximum font cap based on available width:
+  // On screens <= 1024px or narrower panes, cap font size so text never appears oversized or spills
+  const maxFontForWidth = avail < 480 ? 17 : (avail < 620 ? 19 : BOOK_FONT_MAX_PX);
 
-  let finalFontPx = Math.min(MAX_FONT_PX, sideBySideFontPx);
-  if (sideBySideFontPx < MIN_FONT_PX && widestShatr > 0) {
+  // Sizing font based on poetry grid and body text (footnotes wrap naturally)
+  const primaryWidest = Math.max(widestBody, widestBaytSideBySide);
+  const sideBySideFontPx =
+    primaryWidest > 0 ? (BOOK_FONT_BASE_PX * safeAvail) / primaryWidest : maxFontForWidth;
+
+  let finalFontPx = Math.min(maxFontForWidth, sideBySideFontPx);
+
+  // ONLY stack bayt if width is truly too narrow to fit side-by-side even at minimum font size
+  if (sideBySideFontPx < BOOK_FONT_MIN_PX && widestShatr > 0) {
     page.classList.add("stack-bayt");
-    const stackedWidest = Math.max(widestProse, widestShatr + BAYT_STACKED_OVERHEAD_EM * BASE_FONT_PX);
-    const stackedFontPx = stackedWidest > 0 ? (BASE_FONT_PX * avail) / stackedWidest : MAX_FONT_PX;
-    finalFontPx = Math.min(MAX_FONT_PX, stackedFontPx);
+    const stackedWidest = Math.max(widestBody, widestShatr + BAYT_STACKED_OVERHEAD_EM * BOOK_FONT_BASE_PX);
+    const stackedFontPx =
+      stackedWidest > 0 ? (BOOK_FONT_BASE_PX * safeAvail) / stackedWidest : maxFontForWidth;
+    finalFontPx = Math.min(maxFontForWidth, Math.max(BOOK_FONT_MIN_PX - 2, stackedFontPx));
   }
 
   container.style.fontSize = `${finalFontPx}px`;
 
-  // Set verse column widths
-  if (baytRows.length > 0) {
-    page.style.setProperty("--shatr1-col", `${(max1 / BASE_FONT_PX).toFixed(3)}em`);
-    page.style.setProperty("--shatr2-col", `${(max2 / BASE_FONT_PX).toFixed(3)}em`);
-  }
-
   // Mark short lines
-  const scale = finalFontPx / BASE_FONT_PX;
+  const scale = finalFontPx / BOOK_FONT_BASE_PX;
   shortLineCandidates.forEach(({ line, width }) => {
     line.classList.toggle("short-line", width * scale < avail * SHORT_LINE_RATIO);
   });

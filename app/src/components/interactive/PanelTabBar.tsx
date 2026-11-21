@@ -13,6 +13,8 @@ export interface PanelTabBarProps {
   onSelectOverview: () => void;
   onSelectRule: (ruleId: string) => void;
   onSelectMakhraj: () => void;
+  onReturnToIntro?: () => void;
+  showReturnToIntro?: boolean;
 }
 
 export function PanelTabBar({
@@ -23,9 +25,21 @@ export function PanelTabBar({
   onSelectOverview,
   onSelectRule,
   onSelectMakhraj,
+  onReturnToIntro,
+  showReturnToIntro,
 }: PanelTabBarProps) {
   return (
     <div className="panel-tabs">
+      {showReturnToIntro && onReturnToIntro ? (
+        <button
+          type="button"
+          className="panel-tab panel-tab-intro"
+          title="العودة إلى المقدمة وفهرس المنظومة (صفحة ١٢)"
+          onClick={onReturnToIntro}
+        >
+          📑 المقدمة (١٢)
+        </button>
+      ) : null}
       <button type="button" className={`panel-tab ${activeTab === "overview" ? "active" : ""}`} onClick={onSelectOverview}>
         🗂️ نظرة عامة
       </button>

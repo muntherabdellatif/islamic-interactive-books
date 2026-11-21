@@ -4,12 +4,15 @@ import type { TajweedDataset } from "../services/tajweedDataService";
 import {
   chapterForPageContent,
   chapterOf,
-  firstAnnotatedPage,
   getEntity,
   ruleCard,
+  targetPageForEntity,
 } from "../services/tajweedSelectors";
 import { INITIAL_PANEL_STATE, type PanelState } from "../types/panel";
-import { PAGE_QUERY_PARAM, VIEW_MODE_QUERY_PARAM, type ViewMode } from "../types/navigation";
+import { PAGE_QUERY_PARAM, VIEW_MODE_QUERY_PARAM, type MobilePaneView, type ViewMode } from "../types/navigation";
+import { CLEAN_EDITION_MIN_PAGE, DEFAULT_INITIAL_PAGE } from "../constants/ui";
+import { highlightSelected } from "../utils/bookPageDom";
+
 import { useSelection } from "../context/SelectionContext";
 
 export type AnimateDirection = "next" | "prev" | undefined;
@@ -25,8 +28,12 @@ export interface BookViewerController {
   selectRule: (ruleId: string) => void;
   openMakhraj: (regionIds: string[]) => void;
   showBayt: (baytId: string) => void;
-  showChapter: (chapterId: string) => void;
+  showChapter: (chapterId: string, targetPane?: MobilePaneView) => void;
+  returnToIntro: (targetPane?: MobilePaneView) => void;
   toggleViewMode: () => void;
+  mobilePane: MobilePaneView;
+  setMobilePane: (pane: MobilePaneView) => void;
+  toggleMobilePane: () => void;
 }
 
 function clampPage(pageNumber: number, pageCount: number): number {
@@ -35,7 +42,10 @@ function clampPage(pageNumber: number, pageCount: number): number {
 
 function readInitialPage(searchParams: URLSearchParams, pageCount: number): number {
   const raw = Number(searchParams.get(PAGE_QUERY_PARAM));
-  return Number.isInteger(raw) && raw >= 1 && raw <= pageCount ? raw : 1;
+  if (Number.isInteger(raw) && raw >= 1 && raw <= pageCount) {
+    return raw;
+  }
+  return Math.min(pageCount, DEFAULT_INITIAL_PAGE);
 }
 
 export function useBookViewerController(dataset: TajweedDataset, pageCount: number): BookViewerController {
@@ -51,6 +61,11 @@ export function useBookViewerController(dataset: TajweedDataset, pageCount: numb
     return chapter ? { ...INITIAL_PANEL_STATE, chapterId: chapter.id } : INITIAL_PANEL_STATE;
   });
   const [animateDirection, setAnimateDirection] = useState<AnimateDirection>(undefined);
+  const [mobilePane, setMobilePane] = useState<MobilePaneView>("book");
+
+  const toggleMobilePane = useCallback(() => {
+    setMobilePane((prev) => (prev === "book" ? "panel" : "book"));
+  }, []);
 
   const updateUrl = useCallback(
     (nextPage: number, nextView: ViewMode) => {
@@ -92,7 +107,8 @@ export function useBookViewerController(dataset: TajweedDataset, pageCount: numb
     (ruleId: string) => {
       const rule = getEntity(dataset, ruleId);
       const chapter = chapterOf(dataset, rule);
-      const targetPage = rule ? firstAnnotatedPage(dataset, rule) : null;
+      const preferClean = pageNumber >= CLEAN_EDITION_MIN_PAGE;
+      const targetPage = rule ? targetPageForEntity(dataset, rule, preferClean) : null;
 
       setPanelState((previous) => ({
         chapterId: chapter?.id ?? previous.chapterId,
@@ -105,33 +121,68 @@ export function useBookViewerController(dataset: TajweedDataset, pageCount: numb
         goToBookPageOnly(targetPage);
         selectEntity(ruleId);
       }
+      setMobilePane("panel");
     },
     [dataset, goToBookPageOnly, pageNumber, selectEntity],
   );
 
   const openMakhraj = useCallback((regionIds: string[]) => {
     setPanelState((previous) => ({ ...previous, tab: "makhraj", focusRegions: regionIds }));
+    setMobilePane("panel");
   }, []);
 
   const showBayt = useCallback(
     (baytId: string) => {
       const bayt = getEntity(dataset, baytId);
-      const targetPage = bayt ? firstAnnotatedPage(dataset, bayt) : null;
+      const preferClean = pageNumber >= CLEAN_EDITION_MIN_PAGE;
+      const targetPage = bayt ? targetPageForEntity(dataset, bayt, preferClean) : null;
       if (targetPage) {
-        goToPage(targetPage);
+        if (targetPage !== pageNumber) {
+          goToBookPageOnly(targetPage);
+        }
+        const chapter = chapterOf(dataset, bayt);
+        if (chapter) {
+          setPanelState({ ...INITIAL_PANEL_STATE, chapterId: chapter.id });
+        }
         selectEntity(baytId);
+        setMobilePane("book");
       }
     },
-    [dataset, goToPage, selectEntity],
+    [dataset, goToBookPageOnly, pageNumber, selectEntity],
   );
 
   const showChapter = useCallback(
-    (chapterId: string) => {
+    (chapterId: string, targetPane?: MobilePaneView) => {
       const chapter = getEntity(dataset, chapterId);
-      const targetAnchor = chapter?.anchors.find((anchor) => anchor.page <= 10);
-      if (targetAnchor) goToPage(targetAnchor.page);
+      if (!chapter) return;
+      const targetAnchor =
+        chapter.anchors.find((anchor) => anchor.page >= CLEAN_EDITION_MIN_PAGE) ??
+        chapter.anchors[0];
+      if (targetAnchor) {
+        setPanelState({ ...INITIAL_PANEL_STATE, chapterId });
+        if (targetAnchor.page !== pageNumber) {
+          goToBookPageOnly(targetAnchor.page);
+        } else {
+          const container = document.querySelector<HTMLElement>(".book-scroll-area");
+          if (container) {
+            highlightSelected(container, chapterId);
+            if (chapterId === "chapter.muqaddimah") {
+              container.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }
+        }
+        selectEntity(chapterId);
+        setMobilePane(targetPane ?? "book");
+      }
     },
-    [dataset, goToPage],
+    [dataset, goToBookPageOnly, pageNumber, selectEntity],
+  );
+
+  const returnToIntro = useCallback(
+    (targetPane?: MobilePaneView) => {
+      showChapter("chapter.muqaddimah", targetPane);
+    },
+    [showChapter],
   );
 
   const toggleViewMode = useCallback(() => {
@@ -153,7 +204,11 @@ export function useBookViewerController(dataset: TajweedDataset, pageCount: numb
       openMakhraj,
       showBayt,
       showChapter,
+      returnToIntro,
       toggleViewMode,
+      mobilePane,
+      setMobilePane,
+      toggleMobilePane,
     }),
     [
       pageNumber,
@@ -167,7 +222,11 @@ export function useBookViewerController(dataset: TajweedDataset, pageCount: numb
       openMakhraj,
       showBayt,
       showChapter,
+      returnToIntro,
       toggleViewMode,
+      mobilePane,
+      setMobilePane,
+      toggleMobilePane,
     ],
   );
 }

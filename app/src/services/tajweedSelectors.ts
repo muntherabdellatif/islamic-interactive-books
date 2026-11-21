@@ -8,7 +8,12 @@ import type {
   TajweedRuleEntity,
 } from "../types/entities";
 import type { QuizQuestion, RuleData, SupplementaryExample, VideoRef } from "../types/interactive";
-import { ANNOTATED_EDITION_MAX_PAGE, DEFAULT_CARD_COLOR, FULL_ALPHABET_SIZE } from "../constants/ui";
+import {
+  ANNOTATED_EDITION_MAX_PAGE,
+  CLEAN_EDITION_MIN_PAGE,
+  DEFAULT_CARD_COLOR,
+  FULL_ALPHABET_SIZE,
+} from "../constants/ui";
 
 export function getEntity(dataset: TajweedDataset, id: string): BookEntity | null {
   return dataset.byId.get(id) ?? null;
@@ -162,6 +167,25 @@ export function firstAnnotatedPage(dataset: TajweedDataset, entity: BookEntity):
     .flatMap((bayt) => bayt.anchors.map((anchor) => anchor.page))
     .filter((page) => page <= ANNOTATED_EDITION_MAX_PAGE);
   return pages.length ? Math.min(...pages) : null;
+}
+
+/**
+ * Resolves target page for an entity, preferring the clean edition without commentary (pages >= 12)
+ * when preferClean is true.
+ */
+export function targetPageForEntity(
+  dataset: TajweedDataset,
+  entity: BookEntity,
+  preferClean = true,
+): number | null {
+  const bayts = entity.type === "bayt" ? [entity as BaytEntity] : relatedEntitiesOfType(dataset, entity, "bayt");
+  if (preferClean) {
+    const cleanPages = bayts
+      .flatMap((bayt) => bayt.anchors.map((anchor) => anchor.page))
+      .filter((page) => page >= CLEAN_EDITION_MIN_PAGE);
+    if (cleanPages.length) return Math.min(...cleanPages);
+  }
+  return firstAnnotatedPage(dataset, entity);
 }
 
 export function lettersForRegion(dataset: TajweedDataset, regionId: string): string[] {

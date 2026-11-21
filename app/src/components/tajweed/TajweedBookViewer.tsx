@@ -4,8 +4,10 @@ import type { TajweedDataset } from "../../services/tajweedDataService";
 import { prefetchAllPagesInBackground } from "../../services/tajweedDataService";
 import { useTajweedBookData } from "../../hooks/useTajweedBookData";
 import { useBookViewerController } from "../../hooks/useBookViewerController";
+import { useSelection } from "../../context/SelectionContext";
 import { BookArea } from "../book/BookArea";
 import { TajweedInteractivePanel } from "./TajweedInteractivePanel";
+import { MobileViewToggle } from "../interactive/MobileViewToggle";
 
 export interface TajweedBookViewerProps {
   book: BookSummary;
@@ -13,6 +15,7 @@ export interface TajweedBookViewerProps {
 
 function TajweedBookViewerReady({ book, dataset }: TajweedBookViewerProps & { dataset: TajweedDataset }) {
   const controller = useBookViewerController(dataset, book.pageCount);
+  const { selectedEntityId } = useSelection();
 
   useEffect(() => {
     const cancel = prefetchAllPagesInBackground(book.id, book.pageCount);
@@ -22,9 +25,14 @@ function TajweedBookViewerReady({ book, dataset }: TajweedBookViewerProps & { da
   // dir="ltr" here only to pin physical left/right of the two panes (book right, tool left,
   // matching Arabic reading order) via CSS grid-column/order; each pane restores dir="rtl".
   return (
-    <div className="split-workspace" dir="ltr">
+    <div className="split-workspace" dir="ltr" data-mobile-pane={controller.mobilePane}>
       <BookArea bookId={book.id} pageCount={book.pageCount} dataset={dataset} controller={controller} />
       <TajweedInteractivePanel dataset={dataset} pageNumber={controller.pageNumber} controller={controller} />
+      <MobileViewToggle
+        activePane={controller.mobilePane}
+        onChangePane={controller.setMobilePane}
+        hasSelectedEntity={Boolean(selectedEntityId)}
+      />
     </div>
   );
 }

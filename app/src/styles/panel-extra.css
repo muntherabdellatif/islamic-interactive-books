@@ -173,3 +173,51 @@
 .chapter-map-range { color: var(--text-muted); font-size: 0.78rem; }
 .matn-quote-action { margin-top: 6px; }
 .play-btn-disabled { background: #555; }
+
+/* Return to Introduction toolbar & tab styles */
+.panel-tab-intro {
+  margin-inline-start: auto;
+  color: var(--emerald, #2d5a3f);
+  font-weight: 700;
+  background: rgba(45, 90, 63, 0.08);
+  border: 1px dashed rgba(45, 90, 63, 0.35);
+}
+
+.panel-tab-intro:hover {
+  background: rgba(45, 90, 63, 0.16);
+  border-color: var(--emerald, #2d5a3f);
+}
+
+.return-to-intro-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.65rem 0.95rem;
+  margin-bottom: 0.85rem;
+  background: linear-gradient(135deg, rgba(45, 90, 63, 0.09) 0%, rgba(45, 90, 63, 0.03) 100%);
+  border: 1px solid rgba(45, 90, 63, 0.25);
+  border-radius: var(--radius-md, 8px);
+  color: var(--emerald, #2d5a3f);
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: right;
+}
+
+.return-to-intro-banner:hover {
+  background: linear-gradient(135deg, rgba(45, 90, 63, 0.18) 0%, rgba(45, 90, 63, 0.08) 100%);
+  border-color: var(--emerald, #2d5a3f);
+  transform: translateY(-1px);
+}
+
+.return-intro-arrow {
+  font-size: 1.15rem;
+  transition: transform 0.2s ease;
+}
+
+.return-to-intro-banner:hover .return-intro-arrow {
+  transform: translateX(-4px);
+}

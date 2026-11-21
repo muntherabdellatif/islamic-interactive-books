@@ -6,9 +6,17 @@ export interface PageNavProps {
   viewMode: "text" | "scan";
   onGoToPage: (pageNumber: number, direction?: "next" | "prev") => void;
   onToggleViewMode: () => void;
+  onReturnToIntro?: () => void;
 }
 
-export function PageNav({ pageNumber, pageCount, viewMode, onGoToPage, onToggleViewMode }: PageNavProps) {
+export function PageNav({
+  pageNumber,
+  pageCount,
+  viewMode,
+  onGoToPage,
+  onToggleViewMode,
+  onReturnToIntro,
+}: PageNavProps) {
   const [draftValue, setDraftValue] = useState(String(pageNumber));
 
   useEffect(() => {
@@ -53,6 +61,16 @@ export function PageNav({ pageNumber, pageCount, viewMode, onGoToPage, onToggleV
         </button>
       </div>
       <div className="nav-tools">
+        {onReturnToIntro && pageNumber > 12 ? (
+          <button
+            type="button"
+            className="nav-btn-intro"
+            title="العودة إلى المقدمة وفهرس المنظومة (صفحة ١٢)"
+            onClick={onReturnToIntro}
+          >
+            📑 المقدمة (١٢)
+          </button>
+        ) : null}
         <button type="button" className={viewMode === "scan" ? "active" : ""} onClick={onToggleViewMode}>
           {viewMode === "scan" ? "📝 النص المحوَّل" : "📷 الصورة الأصلية"}
         </button>

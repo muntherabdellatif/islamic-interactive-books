@@ -38,16 +38,14 @@
   border: none;
   color: var(--text-on-dark);
   font-size: 1rem;
-  width: 30px; height: 30px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   transition: background 0.2s;
 }
 .nav-pager button:hover { background: rgba(198, 155, 82, 0.25); }
 .nav-pager button:disabled { opacity: 0.3; cursor: default; }
-.nav-pager input {
-  width: 42px; text-align: center; font: inherit;
-  background: transparent; border: none; color: #fff;
-}
+.nav-pager input { width: 42px; text-align: center; font: inherit; background: transparent; border: none; color: #fff; }
 .nav-pager .of { color: var(--text-muted); font-size: 0.85rem; }
 
 .nav-tools { display: flex; gap: 8px; align-items: center; }
@@ -96,13 +94,130 @@
   padding: 18px 22px 60px;
 }
 
-/* Simplified mobile layout: stack vertically, book text above the interactive tool
-   below (not a strict landscape requirement — portrait use is the common case
-   for this audience, so it must stay fully usable, not blocked or degraded). */
-@media (max-width: 900px) {
-  .split-workspace { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
-  .pane-book { grid-column: 1; grid-row: 1; }
-  .pane-panel { grid-column: 1; grid-row: 2; }
+/* Mobile view toggle is hidden on desktop */
+.mobile-view-toggle {
+  display: none;
+}
+
+/* Screen size 768px and below: display either the book OR the interactive panel, with toggle control */
+@media (max-width: 768px) {
+  .top-nav {
+    height: 50px;
+    padding: 0 12px;
+  }
+  .brand-title {
+    font-size: 0.92rem;
+  }
+  .brand-subtitle {
+    display: none;
+  }
+  .nav-tools a {
+    padding: 4px 10px;
+    font-size: 0.76rem;
+  }
+
+  .split-workspace {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    position: relative;
+    height: 100%;
+  }
+
+  .split-workspace[data-mobile-pane="book"] .pane-panel {
+    display: none !important;
+  }
+
+  .split-workspace[data-mobile-pane="book"] .pane-book {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+    height: 100%;
+    padding-bottom: 74px;
+  }
+
+  .split-workspace[data-mobile-pane="panel"] .pane-book {
+    display: none !important;
+  }
+
+  .split-workspace[data-mobile-pane="panel"] .pane-panel {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+    height: 100%;
+    padding-bottom: 74px;
+  }
+
+  /* Floating toggle button between Book and Interactive Panel */
+  .mobile-view-toggle {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: max(16px, env(safe-area-inset-bottom, 16px));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: rgba(11, 41, 26, 0.94);
+    border: 1px solid rgba(198, 155, 82, 0.45);
+    border-radius: 30px;
+    padding: 4px;
+    gap: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 16px rgba(198, 155, 82, 0.25);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    direction: rtl;
+  }
+
+  .mobile-view-toggle .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #e5dfd3;
+    background: transparent;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .mobile-view-toggle .toggle-btn:hover {
+    color: #ffffff;
+    background: rgba(198, 155, 82, 0.15);
+  }
+
+  .mobile-view-toggle .toggle-btn.active {
+    background: linear-gradient(135deg, #d4af37 0%, #b89325 100%);
+    color: #0b291a;
+    box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+  }
+
+  .mobile-view-toggle .toggle-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .mobile-view-toggle .toggle-label {
+    line-height: 1.2;
+  }
+
+  .mobile-view-toggle .toggle-badge-dot {
+    width: 7px;
+    height: 7px;
+    background: #eab308;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 6px #eab308;
+    animation: pulse-dot 1.8s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.35); opacity: 0.7; }
+  }
 }
 
 .panel-section + .panel-section { margin-top: 22px; }
@@ -151,17 +266,12 @@
   color: var(--bg-dark);
 }
 
-.loading-note,
-.error-note,
-.coming-soon-note,
-.not-found-note {
+.loading-note, .error-note, .coming-soon-note, .not-found-note {
   padding: 40px 20px;
   text-align: center;
   color: var(--text-muted);
 }
-.error-note {
-  color: var(--danger);
-}
+.error-note { color: var(--danger); }
 
 .app-crash-note {
   height: 100vh;
@@ -175,11 +285,4 @@
   color: var(--text-muted);
   background: var(--parchment);
 }
-.app-crash-note button {
-  background: var(--gold);
-  color: var(--bg-dark);
-  border: none;
-  font-weight: 700;
-  padding: 8px 20px;
-  border-radius: 18px;
-}
+.app-crash-note button { background: var(--gold); color: var(--bg-dark); border: none; font-weight: 700; padding: 8px 20px; border-radius: 18px; }

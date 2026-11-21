@@ -1,4 +1,6 @@
 export type ViewMode = "text" | "scan";
+export type MobilePaneView = "book" | "panel";
+
 
 export interface BookViewerRouteParams {
   bookId: string;

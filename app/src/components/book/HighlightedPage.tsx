@@ -8,6 +8,7 @@ import {
 import {
   applyHighlights,
   collapseHeavyFootnotes,
+  formatBasmalah,
   formatBaytLines,
   highlightSelected as applySelectedHighlight,
 } from "../../utils/bookPageDom";
@@ -62,8 +63,13 @@ export function HighlightedPage({
     const container = containerRef.current;
     if (!container || html === null) return;
     container.scrollTop = 0;
+    const parentPane = container.closest<HTMLElement>(".pane-book");
+    if (parentPane) {
+      parentPane.scrollTop = 0;
+    }
     container.innerHTML = html;
     collapseHeavyFootnotes(container);
+    formatBasmalah(container);
     formatBaytLines(container);
     applyHighlights(container, dataset, pageNumber, onSelectEntity);
   }, [html, dataset, pageNumber, onSelectEntity]);

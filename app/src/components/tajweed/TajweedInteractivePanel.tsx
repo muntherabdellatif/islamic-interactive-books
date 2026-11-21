@@ -46,7 +46,7 @@ export function TajweedInteractivePanel({ dataset, pageNumber, controller }: Taj
 
   if (!chapter || chapter.type !== "chapter") {
     return (
-      <section className="pane pane-panel" dir="rtl" aria-label="الجزء التفاعلي" ref={panelRef}>
+      <section className="pane pane-panel" dir="rtl" aria-label="الجزء التفاعلي" ref={panelRef} id="pane-panel">
         <NonChapterPage dataset={dataset} pageNumber={pageNumber} onShowChapter={showChapter} />
       </section>
     );
@@ -60,7 +60,7 @@ export function TajweedInteractivePanel({ dataset, pageNumber, controller }: Taj
       : null;
 
   return (
-    <section className="pane pane-panel" dir="rtl" aria-label="الجزء التفاعلي" ref={panelRef}>
+    <section className="pane pane-panel" dir="rtl" aria-label="الجزء التفاعلي" ref={panelRef} id="pane-panel">
       <PanelTabBar
         dataset={dataset}
         leafRules={leafRules}
@@ -69,6 +69,8 @@ export function TajweedInteractivePanel({ dataset, pageNumber, controller }: Taj
         onSelectOverview={() => setPanelTab("overview")}
         onSelectRule={selectRule}
         onSelectMakhraj={() => openMakhraj([])}
+        onReturnToIntro={controller.returnToIntro}
+        showReturnToIntro={pageNumber > 12 || typedChapter.id !== "chapter.muqaddimah"}
       />
       <div className="panel-tab-body">
         {panelState.tab === "overview" ? (
