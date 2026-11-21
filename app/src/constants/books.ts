@@ -117,6 +117,8 @@ export const AVAILABLE_BOOK_IDS: readonly string[] = BOOK_REGISTRY.filter(
   (book) => book.status === "available",
 ).map((book) => book.id);
 
+export const BOOKS_PER_PAGE = 8;
+
 export function getBookById(bookId: string): BookSummary | undefined {
   return BOOK_REGISTRY.find((book) => book.id === bookId);
 }
