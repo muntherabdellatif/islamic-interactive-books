@@ -1,5 +1,6 @@
-/* App shell + split screen. Book is physically LEFT, interactive panel physically RIGHT,
-   regardless of the page's own RTL text direction (pinned explicitly, not left to dir="rtl"). */
+/* App shell + split screen. Book is physically RIGHT, interactive panel physically LEFT —
+   matches Arabic right-to-left reading order (primary content starts on the right),
+   pinned explicitly via grid-column, not left to dir="rtl" alone. */
 .app-shell {
   height: 100vh;
   display: flex;
@@ -78,18 +79,21 @@
 }
 
 .pane-book {
-  grid-column: 1;
+  grid-column: 2;
   background: var(--parchment);
-  order: 1;
+  order: 2;
 }
 
 .pane-panel {
-  grid-column: 2;
-  order: 2;
+  grid-column: 1;
+  order: 1;
   background: #f4efe2;
   padding: 18px 22px 60px;
 }
 
+/* Simplified mobile layout: stack vertically, book text above the interactive tool
+   below (not a strict landscape requirement — portrait use is the common case
+   for this audience, so it must stay fully usable, not blocked or degraded). */
 @media (max-width: 900px) {
   .split-workspace { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
   .pane-book { grid-column: 1; grid-row: 1; }

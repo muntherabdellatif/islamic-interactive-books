@@ -11,6 +11,8 @@ export interface TajweedBookViewerProps {
 
 function TajweedBookViewerReady({ book, dataset }: TajweedBookViewerProps & { dataset: TajweedDataset }) {
   const controller = useBookViewerController(dataset, book.pageCount);
+  // dir="ltr" here only to pin physical left/right of the two panes (book right, tool left,
+  // matching Arabic reading order) via CSS grid-column/order; each pane restores dir="rtl".
   return (
     <div className="split-workspace" dir="ltr">
       <BookArea bookId={book.id} pageCount={book.pageCount} dataset={dataset} controller={controller} />

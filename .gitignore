@@ -16,6 +16,9 @@ build/
 out/
 .next/
 
+# Firebase
+.firebase/
+
 # OS and IDE files
 .DS_Store
 Thumbs.db
