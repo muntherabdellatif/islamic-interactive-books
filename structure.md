@@ -12,9 +12,7 @@ islamic-interactive-books/
 │       ├── entity-resolution/        # مهارة توحيد وتطبيع الأسماء والرواة
 │       └── interactive-builder/      # مهارة بناء المكونات التفاعلية (Graphs/Trees)
 │
-├── constants/                        # الثوابت المركزية العامة للمشروع (pipeline.ts)
-├── types/                            # تعريفات TypeScript الصارمة (pipeline.ts)
-├── preview/                          # تطبيق المعاينة (app.js + أنماط الصفحات CSS)
+├── app/                               # تطبيق React/TypeScript المنشور (منصة متعددة الكتب، فيوور تحفة الأطفال التفاعلي)
 │
 ├── data/                             # البيانات التراثية والمصادر المرجعية
 │   └── books/                        # مجلد الكتب المستهدفة
@@ -31,7 +29,6 @@ islamic-interactive-books/
 ├── pipeline/                         # مجلد خط الإنتاج وإدارة المعالجة الحالية
 │   ├── status.md                     # تتبع حالة الكتاب والحزم قيد المعالجة حالياً
 │   ├── html-transcription-spec.md    # المواصفات الملزمة للمرحلة 1 (HTML مطابق للشكل)
-│   ├── transcription/                # خط تفريغ JSON تجريبي لكتب أخرى (processor.ts + books/<كتاب>/<صفحة>.json) — غير مستخدم لـ al-nashr
 │   ├── reviews/                      # تقارير مراجعة ومطابقة كل حزمة (batch-XXX.md)
 │   └── scripts/                      # crop_page.py (تقطيع الصفحة) و validate_page_html.py (التحقق البنيوي)
 │

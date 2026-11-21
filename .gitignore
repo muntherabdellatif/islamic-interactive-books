@@ -19,6 +19,10 @@ out/
 # Firebase
 .firebase/
 
+# Python
+__pycache__/
+*.pyc
+
 # OS and IDE files
 .DS_Store
 Thumbs.db
